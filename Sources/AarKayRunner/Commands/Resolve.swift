@@ -27,9 +27,15 @@ struct ResolveCommand: CommandProtocol {
             .launch()
             .flatMapTaskEvents(.concat) {
                 SignalProducer(value: String(data: $0, encoding: .utf8))
-        }
+            }
+            .waitOnCommand()
         
-        return taskResult.waitOnCommand()
+        switch taskResult {
+        case .success(_):
+            return BuildCommand().run(options)
+        case .failure(_):
+            return taskResult
+        }
     }
     
 }

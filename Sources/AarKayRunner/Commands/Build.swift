@@ -1,8 +1,8 @@
 //
-//  Update.swift
+//  Build.swift
 //  AarKayRunner
 //
-//  Created by Rahul Katariya on 04/03/18.
+//  Created by RahulKatariya on 20/12/18.
 //
 
 import Foundation
@@ -11,31 +11,28 @@ import ReactiveTask
 import ReactiveSwift
 import Result
 
-struct UpdateCommand: CommandProtocol {
+struct BuildCommand: CommandProtocol {
     
-    var verb: String = "update"
-    var function: String = "Updates all plugins"
+    var verb: String = "build"
+    var function: String = "Builds aarkay with plugins"
     
     func run(_ options: NoOptions<TaskError>) -> Result<(), TaskError> {
-        print("Updating Plugins. This might take a few minutes...")
-        let buildArguments = ["package", "update"]
+        print("Building AarKay with Plugins. This might take a few minutes...")
+        let buildArguments = [
+            "build",
+            "-Xswiftc", "-target", "-Xswiftc", "x86_64-apple-macosx10.12"
+        ]
         let taskResult = Task(
             "/usr/bin/swift",
             arguments: buildArguments,
             workingDirectoryPath: FileManager.default.aarkayRunnerDirectory.path
-        )
+            )
             .launch()
             .flatMapTaskEvents(.concat) {
                 SignalProducer(value: String(data: $0, encoding: .utf8))
-            }
-            .waitOnCommand()
-        
-        switch taskResult {
-        case .success(_):
-            return BuildCommand().run(options)
-        case .failure(_):
-            return taskResult
         }
+        
+        return taskResult.waitOnCommand()
     }
     
 }

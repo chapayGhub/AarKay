@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DefaultFiles {
+class RunnerFiles {
 
     static let cliSwift = """
     import Foundation

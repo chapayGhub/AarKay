@@ -26,7 +26,7 @@ class Runner {
             withIntermediateDirectories: true,
             attributes: nil
         )
-        try! DefaultFiles.cliSwift.write(to: mainSwiftUrl, atomically: true, encoding: .utf8)
+        try! RunnerFiles.cliSwift.write(to: mainSwiftUrl, atomically: true, encoding: .utf8)
     }
 
     private static func createPackageSwift() {
@@ -38,7 +38,7 @@ class Runner {
             withIntermediateDirectories: true,
             attributes: nil
         )
-        try! DefaultFiles.packageSwift.write(to: packageSwiftUrl, atomically: true, encoding: .utf8)
+        try! RunnerFiles.packageSwift.write(to: packageSwiftUrl, atomically: true, encoding: .utf8)
     }
 
     private static func createSwiftVersion() {
@@ -50,7 +50,7 @@ class Runner {
             withIntermediateDirectories: true,
             attributes: nil
         )
-        try! DefaultFiles.swiftVersion.write(to: swiftVersionUrl, atomically: true, encoding: .utf8)
+        try! RunnerFiles.swiftVersion.write(to: swiftVersionUrl, atomically: true, encoding: .utf8)
     }
 
 }
