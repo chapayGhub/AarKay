@@ -36,15 +36,11 @@ extension URL {
         return String(path[index...])
     }
     
-    var localAarKayDataUrl: URL? {
+    var localAarKayDataUrl: URL {
         let localAarKayDataPath = self.appendingPathComponent(
             "AarKay/AarKayData", isDirectory: true
         )
-        if FileManager.default.fileExists(atPath: localAarKayDataPath.path) {
-            return localAarKayDataPath
-        } else {
-            return nil
-        }
+        return localAarKayDataPath
     }
     
     var isEmptyFolder: Bool {

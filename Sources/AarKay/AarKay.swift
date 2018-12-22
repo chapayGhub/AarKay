@@ -29,34 +29,8 @@ public class AarKay {
     
     /// Initializer
     public init?(url: URL) {
-        guard let path = url.relativePathToAarKayRootDirectory else {
-            print("🚫 Current directory should be relative to home directory".red)
-            return nil
-        }
-        
         self.url = url
-        
-        if let dataUrl = url.localAarKayDataUrl {
-            self.aarkayFilesUrl = dataUrl
-        } else {
-            self.aarkayFilesUrl = {
-                let url = URL
-                    .aarkayDataDirectoryForCurrentUser
-                    .appendingPathComponent(path)
-                do {
-                    try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
-                    FileManager.default.createFile(
-                        atPath: url.appendingPathComponent(".aarkay").path,
-                        contents: Data(),
-                        attributes: nil
-                    )
-                } catch {
-                    print(error.localizedDescription.red); fatalError()
-                }
-                return url
-            }()
-        }
-        
+        self.aarkayFilesUrl = url.localAarKayDataUrl
     }
     
     public func bootstrap(force: Bool = false) {
@@ -64,6 +38,10 @@ public class AarKay {
         var table = TextTable(columns: [column])
         table.addRow(values: ["🙏🏻 AarKayData-------> " + aarkayFilesUrl.path])
         print(table.render().magenta)
+        
+        guard FileManager.default.fileExists(atPath: aarkayFilesUrl.path) else {
+            print("No datafiles found".red); return
+        }
         
         if !force {
             if url.isDirty {
