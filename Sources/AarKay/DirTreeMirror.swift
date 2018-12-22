@@ -18,7 +18,11 @@ public class DirTreeMirror {
         return subpaths?
             .filter { return !$0.hasPrefix(".") }
             .map {
-                return URL(fileURLWithPath: $0, isDirectory: sourceUrl.appendingPathComponent($0).hasDirectoryPath, relativeTo: sourceUrl)
+                return URL(
+                    fileURLWithPath: $0,
+                    isDirectory: sourceUrl.appendingPathComponent($0).hasDirectoryPath,
+                    relativeTo: sourceUrl
+                )
             } ?? []
     }
     

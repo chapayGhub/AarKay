@@ -9,13 +9,13 @@ import Foundation
 
 class NameTemplate {
     
-    let template: String
     let name: String
+    let template: String
 
     init(string: String) {
         let components = string.components(separatedBy: ".")
-        template = components[components.count-2]
         name = components.first!
+        template = components[components.count-2]
     }
     
 }

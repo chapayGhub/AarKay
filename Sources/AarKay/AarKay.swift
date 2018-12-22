@@ -7,8 +7,6 @@
 
 import Foundation
 import AarKayKit
-import PrettyColors
-import SwiftyTextTable
 import Yams
 
 public class AarKay {
@@ -16,8 +14,13 @@ public class AarKay {
     /// Project Url
     public let url: URL
     
+    /// The File Manager
+    let fileManager: FileManager
+    
     /// AarKayFiles url directory relative to path
-    let aarkayFilesUrl: URL
+    lazy var aarkayFilesUrl: URL = {
+        return url.appendingPathComponent("AarKay/AarKayData", isDirectory: true)
+    }()
     
     lazy var aarkayContext: [String: Any]? = {
         let aarkayLocalContextUrl = aarkayFilesUrl.appendingPathComponent(".aarkay")
@@ -28,25 +31,22 @@ public class AarKay {
     }()
     
     /// Initializer
-    public init?(url: URL) {
+    public init?(url: URL, fileManager: FileManager = FileManager.default) {
         self.url = url
-        self.aarkayFilesUrl = url.localAarKayDataUrl
+        self.fileManager = fileManager
     }
     
     public func bootstrap(force: Bool = false) {
-        let column = TextTableColumn(header: "🚀 Launch---i--n--g--> " + url.path)
-        var table = TextTable(columns: [column])
-        table.addRow(values: ["🙏🏻 AarKayData-------> " + aarkayFilesUrl.path])
-        print(table.render().magenta)
+        
+        AarKayLogger.logTable(url: url, datafilesUrl: aarkayFilesUrl)
         
         guard FileManager.default.fileExists(atPath: aarkayFilesUrl.path) else {
-            print("No datafiles found".red); return
+            AarKayLogger.logNoDatafiles(); return
         }
         
         if !force {
-            if url.isDirty {
-                print("🚫 Please discard or stash all your changes to git or try it inside an empty folder".red)
-                return
+            if fileManager.git.isDirty(url: url) {
+                AarKayLogger.logDirtyRepo(); return
             }
         }
         
@@ -66,38 +66,70 @@ public class AarKay {
                     
                     guard !sourceUrl.lastPathComponent.hasPrefix(".") else { return }
                     
-                    print("<^> \(sourceUrl.lastPathComponent)".blue)
-                    
-                    let contents = try! String(contentsOf: sourceUrl)
+                    AarKayLogger.logDatafile(at: sourceUrl)
                     
                     let nameTemplate = NameTemplate(string: sourceUrl.lastPathComponent)
-                    let fileName = nameTemplate.name
-                    let template = nameTemplate.template
+                    let contents = try! String(contentsOf: sourceUrl)
                     
                     do {
-                        let Renderedfiles = try AarKayKit.bootstrap(plugin: plugin,
+                        let renderedfiles = try AarKayKit.bootstrap(plugin: plugin,
                                                                     globalContext: aarkayContext,
-                                                                    fileName: fileName,
-                                                                    template: template,
+                                                                    fileName: nameTemplate.name,
+                                                                    template: nameTemplate.template,
                                                                     contents: contents)
                         
-                        Renderedfiles.forEach { Renderedfile in
-                            switch Renderedfile {
+                        renderedfiles.forEach { renderedfile in
+                            switch renderedfile {
                             case .success(let value):
-                                FileManager.default.createFile(
+                                createFile(
                                     renderedfile: value,
                                     at: destinationUrl.deletingLastPathComponent()
                                 )
                             case .failure(let error):
-                                print("   <!> \(error.localizedDescription)".red)
+                                AarKayLogger.logError(error)
                             }
                         }
                     } catch {
-                        print("   <!> \(error.localizedDescription)".red)
+                        AarKayLogger.logError(error)
                     }
                     
                 }
                 
+        }
+    }
+    
+    func createFile(renderedfile: Renderedfile, at url: URL) {
+        var url = url
+        if let directory = renderedfile.directory {
+            url = url
+                .appendingPathComponent(directory, isDirectory: true)
+                .standardized
+        }
+        url.appendPathComponent(renderedfile.fileName)
+        let stringBlock = renderedfile.stringBlock
+        let override = renderedfile.override
+        do {
+            if fileManager.fileExists(atPath: url.path) {
+                if override {
+                    let currentString = try! String(contentsOf: url)
+                    let string = stringBlock(currentString)
+                    if string != currentString {
+                        try string.write(toFile: url.path, atomically: true, encoding: .utf8)
+                        AarKayLogger.logFileModified(at: url)
+                    } else {
+                        AarKayLogger.logFileSkipped(at: url)
+                    }
+                } else {
+                    AarKayLogger.logFileSkipped(at: url)
+                }
+            } else {
+                let string = stringBlock(nil)
+                try? fileManager.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true, attributes: nil)
+                try string.write(toFile: url.path, atomically: true, encoding: .utf8)
+                AarKayLogger.logFileAdded(at: url)
+            }
+        } catch {
+            AarKayLogger.logError(error)
         }
     }
     

@@ -24,9 +24,4 @@ extension FileManager {
             .appendingPathComponent("debug/aarkay-cli", isDirectory: false)
     }
     
-    var aarkayServer: URL {
-        return aarkayBuildDirectory
-            .appendingPathComponent("debug/aarkay-server", isDirectory: false)
-    }
-    
 }

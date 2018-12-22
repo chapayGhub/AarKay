@@ -22,6 +22,7 @@ let package = Package(
         /* ------------------------------------------------------ */
         .package(url: "https://github.com/jdhealy/PrettyColors.git", .exact("5.0.1")),
         .package(url: "https://github.com/scottrhoyt/SwiftyTextTable.git", .exact("0.8.0")),
+        .package(url: "https://github.com/Nike-Inc/Willow.git", .upToNextMajor(from: "5.0.0")),
         /* ------------------------------------------------------ */
         /* >>> Runner ------------------------------------------- */
         /* ------------------------------------------------------ */
@@ -33,7 +34,7 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "AarKay",
-            dependencies: ["AarKayKit", "PrettyColors", "SwiftyTextTable"]
+            dependencies: ["AarKayKit", "PrettyColors", "SwiftyTextTable", "Willow"]
         ),
         .target(
             name: "AarKayCLI",
