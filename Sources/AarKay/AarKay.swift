@@ -96,6 +96,8 @@ public class AarKay {
                 }
                 
         }
+        
+        AarKayLogger.waitForCompletion()
     }
     
     func createFile(renderedfile: Renderedfile, at url: URL) {

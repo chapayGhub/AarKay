@@ -120,11 +120,11 @@
       },
       {
         "package": "Willow",
-        "repositoryURL": "https://github.com/Nike-Inc/Willow.git",
+        "repositoryURL": "https://github.com/RahulKatariya/Willow.git",
         "state": {
           "branch": null,
-          "revision": "d1304b6374cace1e4008b5f5faec7ce973f54ede",
-          "version": "5.1.0"
+          "revision": "ed837b916736d38df8a9410d94d4746fdcc22be2",
+          "version": "5.1.1"
         }
       },
       {
