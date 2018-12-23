@@ -6,4 +6,4 @@ let url = URL(fileURLWithPath: #file)
     .deletingLastPathComponent()
     .deletingLastPathComponent()
 
-if let aarkay = AarKay(url: url) { aarkay.bootstrap(force: true) }
+AarKay(url: url).bootstrap(force: true)

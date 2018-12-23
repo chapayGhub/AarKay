@@ -31,12 +31,13 @@ public class AarKay {
     }()
     
     /// Initializer
-    public init?(url: URL, fileManager: FileManager = FileManager.default) {
+    public init(url: URL, fileManager: FileManager = FileManager.default) {
         self.url = url
         self.fileManager = fileManager
     }
     
     public func bootstrap(force: Bool = false) {
+        defer { AarKayLogger.waitForCompletion() }
         
         AarKayLogger.logTable(url: url, datafilesUrl: aarkayFilesUrl)
         
@@ -97,7 +98,6 @@ public class AarKay {
                 
         }
         
-        AarKayLogger.waitForCompletion()
     }
     
     func createFile(renderedfile: Renderedfile, at url: URL) {

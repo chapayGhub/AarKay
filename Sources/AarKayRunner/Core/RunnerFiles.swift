@@ -14,7 +14,7 @@ class RunnerFiles {
     import AarKay
 
     let url = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-    if let aarkay = AarKay(url: url) { aarkay.bootstrap() }
+    AarKay(url: url).bootstrap()
     """
 
     static let packageSwift = """
