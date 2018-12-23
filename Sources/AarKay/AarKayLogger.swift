@@ -12,19 +12,18 @@ import SwiftyTextTable
 
 class AarKayLogger {
     
-    private static let group = DispatchGroup()
-    private static let queue = DispatchQueue(label: "me.RahulKatariya.AarKay.outputQueue", qos: .utility)
-    
     private static let `default`: Logger = {
         return Logger(
             logLevels: [.all],
             writers: [ConsoleWriter()],
-            executionMethod: .asynchronous(queue: queue, group: group)
+            executionMethod: .asynchronous(
+                queue: DispatchQueue(label: "me.RahulKatariya.AarKay.outputQueue", qos: .utility)
+            )
         )
     }()
     
     static func waitForCompletion() {
-        group.wait()
+        AarKayLogger.default.waitForAllLogsCompletion()
     }
     
     static func logTable(url: URL, datafilesUrl: URL) {
