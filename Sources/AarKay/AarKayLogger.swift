@@ -52,15 +52,16 @@ class AarKayLogger {
     }
     
     static func logFileAdded(at url: URL) {
-        AarKayLogger.default.eventMessage { "   <+> \(url.absoluteString)".green }
+        AarKayLogger.default.eventMessage { "   <+> \(url.relativeString)".green }
     }
     
     static func logFileModified(at url: URL) {
-        AarKayLogger.default.eventMessage { "   <*> \(url.absoluteString)".yellow }
+        AarKayLogger.default.eventMessage { "   <*> \(url.relativeString)".yellow }
     }
     
     static func logFileSkipped(at url: URL) {
-        AarKayLogger.default.eventMessage { "   <-> \(url.absoluteString)" }
+        // FIXME:- only print with verbose flag.
+//        AarKayLogger.default.eventMessage { "   <-> \(url.absoluteString)" }
     }
     
 }
