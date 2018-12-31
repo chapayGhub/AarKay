@@ -7,4 +7,3 @@ properties:
 computedProperties:
     - allProperties|[ArgModel]?
     - requiredProperties|[ArgModel]?
-
