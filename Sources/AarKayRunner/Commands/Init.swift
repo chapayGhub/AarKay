@@ -18,7 +18,7 @@ struct InitCommand: CommandProtocol {
     
     func run(_ options: NoOptions<TaskError>) -> Result<(), TaskError> {
         print("Setting up ~/AarKay/AarKayRunner. This might take a few minutes...")
-        try? FileManager.default.removeItem(at: FileManager.default.aarkayRunnerDirectory)
+        try? FileManager.default.removeItem(at: FileManager.default.aarkayBuildDirectory)
         Runner.bootstrap()
         return BuildCommand().run(options)
     }

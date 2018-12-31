@@ -13,11 +13,11 @@ import Result
 
 struct ResolveCommand: CommandProtocol {
     
-    var verb: String = "resolve"
-    var function: String = "Resolves all plugins"
+    var verb: String = "install"
+    var function: String = "Install all plugins"
     
     func run(_ options: NoOptions<TaskError>) -> Result<(), TaskError> {
-        print("Resolving Plugins. This might take a few minutes...")
+        print("Installing Plugins. This might take a few minutes...")
         let buildArguments = ["package", "resolve"]
         let taskResult = Task(
             "/usr/bin/swift",

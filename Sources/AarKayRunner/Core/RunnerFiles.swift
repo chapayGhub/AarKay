@@ -18,7 +18,7 @@ class RunnerFiles {
     """
 
     static let packageSwift = """
-    // swift-tools-version:4.0
+    // swift-tools-version:4.2
     import PackageDescription
     import Foundation
     
@@ -49,7 +49,7 @@ class RunnerFiles {
         targets: [
             .target(name: "aarkay-cli", dependencies: targetDependencies, path: "Sources/AarKayCLI"),
         ],
-        swiftLanguageVersions: [4]
+        swiftLanguageVersions: [4_2]
     )
     """
 
