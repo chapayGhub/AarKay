@@ -11,7 +11,7 @@ import Foundation
 /// Represents a recursive directory tree shallow mirror with respect to another directory.
 ///
 ///     +-----------------------+                   +-----------------------+
-///     | - DirOnDisk/          |                   | - MirrorDir/          |
+///     | - DirOnDisk/*         |                   | - MirrorDir/*         |
 ///     |-----------------------|                   |-----------------------|
 ///     |   - SubDir1/          |                   |   - SubDir1/          |
 ///     |     - SubSubDir1/     |                   |     - SubSubDir1/     |

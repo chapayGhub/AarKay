@@ -6,8 +6,6 @@
 
 AarKay is a language independent code generation framework which allows you to apply data to your personal [templates](https://github.com/RahulKatariya/AarKay/blob/master/guides/Templatefile.md) and generates code for you with empty placeholders for custom logics.
 
-> Javascript port is under develogpment, contributors are welcome! - [AarKay.js](https://github.com/RahulKatariya/AarKay.js)
-
 <p align="center"><img src="https://raw.githubusercontent.com/RahulKatariya/AarKay/master/.github/1.png"></p>
 
 ## Overview

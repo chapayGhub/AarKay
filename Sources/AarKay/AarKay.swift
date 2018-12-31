@@ -118,14 +118,15 @@ public class AarKay {
                             return
                         }
                         
-                        let name = components[0]
+                        /// Skip `dot` prefix if present.
+                        let name = components.count == 4 ? components[1] : components[0]
                         let template = components[components.count-2]
                         
                         do {
                             /// Read the contents of the Datafile.
                             let contents = try String(contentsOf: sourceUrl)
                             
-                            /// Returns all rendered files result from the contents of Datafile.
+                            /// Returns all generated files result.
                             let renderedfiles = try AarKayKit.bootstrap(plugin: plugin,
                                                                         globalContext: globalContext,
                                                                         fileName: name,
@@ -198,10 +199,10 @@ public class AarKay {
         }
     }
     
-    /// Reads the global context url from the path "{PROJECT_ROOT}/AarKay/.aarkay".
+    /// Reads the global context url from the path "{PROJECT_ROOT}/AarKay/.aarkay" and serializes it into a dictionary using Yaml serialzer.
     ///
-    /// - Returns: The key value pairs from global context url.
-    /// - Throws: An error if the context url is not readable.
+    /// - Returns: The dictionary from contents.
+    /// - Throws: An error if the url contents cannot be loaded.
     func aarkayGlobalContext() throws -> [String: Any]? {
         let aarkayGlobalContextUrl = url.appendingPathComponent("AarKay/.aarkay")
         guard let contents = try? String(contentsOf: aarkayGlobalContextUrl) else {
