@@ -5,7 +5,7 @@ SHORT_NAME = rk
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(INSTALL_NAME)
 DEV_INSTALL_PATH = $(PREFIX)/bin/$(SHORT_NAME)d
-BUILD_PATH = .build/release/$(TOOL_NAME)
+BUILD_PATH = .build/debug/$(TOOL_NAME)
 
 .PHONY: build dev install uninstall
 
@@ -23,7 +23,7 @@ dev: build
 
 build:
 	set -e
-	swift build --disable-sandbox -c release -Xswiftc -static-stdlib -Xswiftc "-target" -Xswiftc "x86_64-apple-macosx10.12"
+	swift build --disable-sandbox -Xswiftc -static-stdlib -Xswiftc "-target" -Xswiftc "x86_64-apple-macosx10.12"
 
 uninstall:
 	set -e

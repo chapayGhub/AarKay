@@ -30,16 +30,17 @@ struct RunCommand: CommandProtocol {
     
     func run(_ options: Options) -> Result<(), AarKayError> {
         var runnerUrl = FileManager.runnerPath()
+        var cliUrl: URL = FileManager.cliPath()
+        
         if !FileManager.default.fileExists(atPath: runnerUrl.path) || options.global {
-            let globalRunnerUrl = FileManager.runnerPath(global: options.global)
-            runnerUrl = globalRunnerUrl
+            runnerUrl = FileManager.runnerPath(global: true)
+            cliUrl = FileManager.cliPath(global: true)
         }
         
         guard FileManager.default.fileExists(atPath: runnerUrl.path) else {
             return .failure(.missingProject(runnerUrl.deletingLastPathComponent().path))
         }
         
-        let cliUrl = runnerUrl.appendingPathComponent(".build/release/aarkay-cli")
         var arguments: [String] = []
         if options.verbose { arguments.append("--verbose") }
         if options.force { arguments.append("--force") }

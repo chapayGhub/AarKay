@@ -20,6 +20,8 @@ class Runner {
         if force {
             let buildUrl = FileManager.buildPath(global: global)
             try FileManager.default.removeItem(at: buildUrl)
+            let packageResolvedUrl = FileManager.packageResolved(global: global)
+            try FileManager.default.removeItem(at: packageResolvedUrl)
         }
         try createCLISwift(global: global, force: force)
         try createPackageSwift(global: global, force: force)

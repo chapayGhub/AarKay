@@ -19,7 +19,7 @@ class Tasks {
     /// - Returns: A result containing either success or `AarKayError`
     static func build(at path: String) -> Result<(), AarKayError> {
         let buildArguments = [
-            "build", "-c", "release",
+            "build", "-c", "debug",
             "-Xswiftc", "-target", "-Xswiftc", "x86_64-apple-macosx10.12"
         ]
         let task = Task(

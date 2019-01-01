@@ -36,7 +36,7 @@ extension FileManager {
     /// - Parameter global: Decides whether to construct url relative to global directory or local directory.
     /// - Returns: The created url.
     static func aarkayPath(global: Bool = false) -> URL {
-        return directoryPath().appendingPathComponent("AarKay", isDirectory: true)
+        return directoryPath(global: global).appendingPathComponent("AarKay", isDirectory: true)
     }
     
     /// Creates the url for the runner directory of `AarKay`.
@@ -60,7 +60,7 @@ extension FileManager {
     /// - Parameter global: Decides whether to construct url relative to global directory or local directory.
     /// - Returns: The created url.
     static func cliPath(global: Bool = false) -> URL {
-        return buildPath(global: global).appendingPathComponent("release/aarkay-cli")
+        return buildPath(global: global).appendingPathComponent("debug/aarkay-cli")
     }
     
     /// Creates the url for the `main.swift` file of `AarKayRunner`.
@@ -77,6 +77,14 @@ extension FileManager {
     /// - Returns: The created url.
     static func packageSwift(global: Bool = false) -> URL {
         return runnerPath(global: global).appendingPathComponent("Package.swift")
+    }
+    
+    /// Creates the url of `Package.resolved` file of `AarKayRunner`.
+    ///
+    /// - Parameter global: Decides whether to construct url relative to global directory or local directory.
+    /// - Returns: The created url.
+    static func packageResolved(global: Bool = false) -> URL {
+        return runnerPath(global: global).appendingPathComponent("Package.resolved")
     }
     
     /// Creates the url of `.swift-version` file of `AarKayRunner`.
