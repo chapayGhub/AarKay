@@ -2,7 +2,7 @@ import Foundation
 import Commandant
 import ReactiveTask
 
-let version = "v0.0.10"
+let version = "v0.0.11"
 
 /// Command registry containing all commands supported by `AarKay`.
 let registry = CommandRegistry<AarKayError>()
