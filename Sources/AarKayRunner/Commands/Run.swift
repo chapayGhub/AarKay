@@ -37,7 +37,8 @@ struct RunCommand: CommandProtocol {
             cliUrl = FileManager.cliPath(global: true)
         }
         
-        guard FileManager.default.fileExists(atPath: runnerUrl.path) else {
+        guard FileManager.default.fileExists(atPath: runnerUrl.path),
+            FileManager.default.fileExists(atPath: cliUrl.path) else {
             return .failure(.missingProject(runnerUrl.deletingLastPathComponent().path))
         }
         

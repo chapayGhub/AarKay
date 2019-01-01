@@ -25,11 +25,17 @@ struct InstallCommand: CommandProtocol {
     var function: String = "Install all the plugins from `AarKayFile`."
     
     func run(_ options: Options) -> Result<(), AarKayError> {
-        let url = FileManager.runnerPath(global: options.global)
-        guard FileManager.default.fileExists(atPath: url.path) else {
-            return .failure(.missingProject(url.path))
+        var runnerUrl = FileManager.runnerPath()
+        
+        if !FileManager.default.fileExists(atPath: runnerUrl.path) || options.global {
+            runnerUrl = FileManager.runnerPath(global: true)
         }
-        println("Bootstrap AarKay with plugins at \(url.path). This might take a few minutes...")
-        return Tasks.install(at: url.path)
+        
+        guard FileManager.default.fileExists(atPath: runnerUrl.path) else {
+            return .failure(.missingProject(runnerUrl.deletingLastPathComponent().path))
+        }
+        
+        println("Installing plugins at \(runnerUrl.path). This might take a few minutes...")
+        return Tasks.install(at: runnerUrl.path)
     }
 }

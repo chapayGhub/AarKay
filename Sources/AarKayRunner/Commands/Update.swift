@@ -25,11 +25,17 @@ struct UpdateCommand: CommandProtocol {
     var function: String = "Update all the plugins from `AarKayFile`."
     
     func run(_ options: Options) -> Result<(), AarKayError> {
-        let url = FileManager.runnerPath(global: options.global)
-        guard FileManager.default.fileExists(atPath: url.path) else {
-            return .failure(.missingProject(url.path))
+        var runnerUrl = FileManager.runnerPath()
+        
+        if !FileManager.default.fileExists(atPath: runnerUrl.path) || options.global {
+            runnerUrl = FileManager.runnerPath(global: true)
         }
-        println("Updating Plugins at \(url.path). This might take a few minutes...")
-        return Tasks.update(at: url.path)
+        
+        guard FileManager.default.fileExists(atPath: runnerUrl.path) else {
+            return .failure(.missingProject(runnerUrl.deletingLastPathComponent().path))
+        }
+        
+        println("Updating Plugins at \(runnerUrl.path). This might take a few minutes...")
+        return Tasks.update(at: runnerUrl.path)
     }
 }
