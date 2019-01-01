@@ -27,8 +27,8 @@ struct InitCommand: CommandProtocol {
     var function: String = "Initialize AarKay and install all the plugins from `AarKayFile`."
     
     func run(_ options: Options) -> Result<(), AarKayError> {
-        let url = FileManager.directoryPath(global: options.global)
-        let runnerUrl = FileManager.runnerPath(global: options.global)
+        let url = URL.directoryPath(global: options.global)
+        let runnerUrl = URL.runnerPath(global: options.global)
         if FileManager.default.fileExists(atPath: runnerUrl.path) && !options.force {
             return .failure(.projectAlreadyExists(url.path))
         } else {
@@ -37,7 +37,7 @@ struct InitCommand: CommandProtocol {
             } catch {
                 return .failure(.bootstap(error))
             }
-            let runnerUrl = FileManager.runnerPath(global: options.global)
+            let runnerUrl = URL.runnerPath(global: options.global)
             println("Setting up \(url.path). This might take a few minutes...")
             return Tasks.install(at: runnerUrl.path)
         }

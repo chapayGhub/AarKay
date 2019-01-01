@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension FileManager {
+extension URL {
     
     /// Creates the url representing the global directory for `AarKay`
     ///

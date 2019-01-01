@@ -25,11 +25,11 @@ struct InstallCommand: CommandProtocol {
     var function: String = "Install all the plugins from `AarKayFile`."
     
     func run(_ options: Options) -> Result<(), AarKayError> {
-        var runnerUrl = FileManager.runnerPath()
+        var runnerUrl = URL.runnerPath()
         var global = false
         
         if !FileManager.default.fileExists(atPath: runnerUrl.path) || options.global {
-            runnerUrl = FileManager.runnerPath(global: true)
+            runnerUrl = URL.runnerPath(global: true)
             global = true
         }
         
