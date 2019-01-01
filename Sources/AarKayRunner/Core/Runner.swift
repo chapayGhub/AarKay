@@ -24,7 +24,7 @@ class Runner {
             try FileManager.default.removeItem(at: packageResolvedUrl)
         }
         try createCLISwift(global: global, force: force)
-        try createPackageSwift(global: global, force: force)
+        try updatePackageSwift(global: global)
         try createSwiftVersion(global: global, force: force)
         try createAarKayFile(global: global, force: force)
     }
@@ -38,17 +38,6 @@ class Runner {
     private static func createCLISwift(global: Bool, force: Bool = false) throws {
         let url = FileManager.mainSwift(global: global)
         try write(string: RunnerFiles.cliSwift, url: url, force: force)
-    }
-    
-    /// Creates Package.swift file
-    ///
-    /// - Parameters:
-    ///   - global: Setting global to true will bootstrap the `AarKay` project inside home directory otherwise will setup in the local directory.
-    ///   - force: Setting force to true will delete all the files before creating them.
-    /// - Throws: File manager errors
-    private static func createPackageSwift(global: Bool, force: Bool = false) throws {
-        let url = FileManager.packageSwift(global: global)
-        try write(string: RunnerFiles.packageSwift, url: url, force: force)
     }
 
     /// Creates .swift-version file.
@@ -71,6 +60,26 @@ class Runner {
     private static func createAarKayFile(global: Bool, force: Bool = false) throws {
         let url = FileManager.aarkayFile(global: global)
         try write(string: RunnerFiles.aarkayFile, url: url, force: force)
+    }
+    
+    /// Updates `Package.swift` with `AarKayFile` dependencies.
+    ///
+    /// - Parameters:
+    ///   - global: Setting global to true will bootstrap the `AarKay` project inside home directory otherwise will setup in the local directory.
+    /// - Throws: File manager errors
+    static func updatePackageSwift(global: Bool) throws {
+        let aarkayFileUrl = FileManager.aarkayFile(global: global)
+        var urls: [URL] = []
+        if let lines = try? String(contentsOf: aarkayFileUrl).components(separatedBy: .newlines) {
+            let depUrls = lines
+                .filter { !$0.isEmpty }
+                .map { URL.init(string: $0) }
+                .compactMap { $0 }
+            urls = urls + depUrls
+        }
+        let contents = RunnerFiles.packageSwift(urls: urls)
+        let url = FileManager.packageSwift(global: global)
+        try write(string: contents, url: url, force: true)
     }
     
     /// Writes the string to the destination url atomically and using .utf8 encoding.

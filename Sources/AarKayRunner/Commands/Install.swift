@@ -26,15 +26,22 @@ struct InstallCommand: CommandProtocol {
     
     func run(_ options: Options) -> Result<(), AarKayError> {
         var runnerUrl = FileManager.runnerPath()
+        var global = false
         
         if !FileManager.default.fileExists(atPath: runnerUrl.path) || options.global {
             runnerUrl = FileManager.runnerPath(global: true)
+            global = true
         }
         
         guard FileManager.default.fileExists(atPath: runnerUrl.path) else {
             return .failure(.missingProject(runnerUrl.deletingLastPathComponent().path))
         }
         
+        do {
+            try Runner.updatePackageSwift(global: global)
+        } catch {
+            return .failure(.bootstap(error))
+        }
         println("Installing plugins at \(runnerUrl.path). This might take a few minutes...")
         return Tasks.install(at: runnerUrl.path)
     }

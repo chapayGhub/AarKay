@@ -23,45 +23,6 @@ class RunnerFiles {
     AarKay(url: url, options: options).bootstrap()
     """
 
-    /// The package description string for `AarKayRunner`
-    static let packageSwift = """
-    // swift-tools-version:4.2
-    import PackageDescription
-    import Foundation
-
-    var urls: [String] = [
-        "https://github.com/RahulKatariya/AarKay.git",
-        "https://github.com/RahulKatariya/AarKayKit.git"
-    ]
-
-    let aarkayFileUrl = URL(fileURLWithPath: #file)
-        .deletingLastPathComponent()
-        .deletingLastPathComponent()
-        .appendingPathComponent("AarKayFile", isDirectory: false)
-
-    if let lines = try? String(contentsOf: aarkayFileUrl).components(separatedBy: .newlines) {
-        let depUrls = lines.filter { !$0.isEmpty }
-        urls = urls + depUrls
-    }
-
-    let dependencies = urls.map { Package.Dependency.package(url: $0, .upToNextMinor(from: "0.0.0")) }
-    let targets = urls.map { URL(string: $0)!.deletingPathExtension().lastPathComponent }
-    let targetDependencies = targets.map { Target.Dependency._byNameItem(name: $0) }
-        + [Target.Dependency._byNameItem(name: "AarKayPlugin")]
-
-    let package = Package(
-        name: "AarKayRunner",
-        products: [
-            .executable(name: "aarkay-cli", targets: ["aarkay-cli"])
-        ],
-        dependencies: dependencies,
-        targets: [
-            .target(name: "aarkay-cli", dependencies: targetDependencies, path: "Sources/AarKayCLI"),
-        ],
-        swiftLanguageVersions: [.v4, .v4_2]
-    )
-    """
-
     /// The .swift-version string
     static let swiftVersion = "4.2.1"
     
@@ -69,4 +30,38 @@ class RunnerFiles {
     static let aarkayFile = """
     """
 
+    /// The package description string for `AarKayRunner`
+    static func packageSwift(urls: [URL]) -> String {
+        let packages = urls.reduce("") { (result, url) -> String in
+            return result + """
+            \n        .package(url: "\(url.path)", .upToNextMinor(from: "0.0.0")),
+            """
+        }
+        
+        let dependencies = urls.reduce("") { (result, url) -> String in
+            return result + " \"" + url.deletingPathExtension().lastPathComponent + "\","
+        }
+        
+        return """
+        // swift-tools-version:4.2
+        import PackageDescription
+        import Foundation
+        
+        let package = Package(
+            name: "AarKayRunner",
+            products: [
+                .executable(name: "aarkay-cli", targets: ["aarkay-cli"])],
+            dependencies: [
+                .package(url: "https://github.com/RahulKatariya/AarKay.git", .upToNextMinor(from: "0.0.0")),
+                .package(url: "https://github.com/RahulKatariya/AarKayKit.git", .upToNextMinor(from: "0.0.0")),\(packages)],
+            targets: [
+                .target(
+                    name: "aarkay-cli",
+                    dependencies: ["AarKay", "AarKayKit", "AarKayPlugin",\(dependencies)],
+                    path: "Sources/AarKayCLI"),],
+            swiftLanguageVersions: [.v4, .v4_2]
+        )
+        """
+    }
+    
 }
