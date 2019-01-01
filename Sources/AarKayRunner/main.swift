@@ -2,16 +2,17 @@ import Foundation
 import Commandant
 import ReactiveTask
 
-let registry = CommandRegistry<TaskError>()
+let version = "v0.0.8"
+
+/// Command registry containing all commands supported by `AarKay`.
+let registry = CommandRegistry<AarKayError>()
 registry.register(InitCommand())
+registry.register(InstallCommand())
 registry.register(RunCommand())
 registry.register(UpdateCommand())
-registry.register(ResolveCommand())
-registry.register(BuildCommand())
+registry.register(HelpCommand(registry: registry))
 
-let helpCommand = HelpCommand(registry: registry)
-registry.register(helpCommand)
-
+/// Setting the default command to `run` instead of `help`.
 registry.main(defaultVerb: "run") { error in
     fputs(error.description + "\n", stderr)
 }

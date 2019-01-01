@@ -1,8 +1,7 @@
 import XCTest
-@testable import AarKayKitTests
-@testable import AarKayPluginTests
+@testable import AarKay
+@testable import AarKayRunner
 
 XCTMain([
-    testCase(AarKayKitTests.allTests),
-    testCase(AarKayPluginTests.allTests),
+    
 ])

@@ -18,7 +18,7 @@ class AarKayLogger {
             logLevels: [.all],
             writers: [ConsoleWriter()],
             executionMethod: .asynchronous(
-                queue: DispatchQueue(label: "me.RahulKatariya.AarKay.outputQueue", qos: .utility)
+                queue: DispatchQueue(label: "me.RahulKatariya.AarKay.outputQueue", qos: .userInitiated)
             )
         )
     }()

@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/RahulKatariya/AarKayKit.git",
         "state": {
           "branch": null,
-          "revision": "40823794c985b5ded2ac7900a46864ff0064a2d7",
-          "version": "0.0.31"
+          "revision": "53cb2432ee3eba26ce32e61d2aa40f4e453eea8d",
+          "version": "0.0.32"
         }
       },
       {
@@ -17,6 +17,15 @@
           "branch": null,
           "revision": "07cad52573bad19d95844035bf0b25acddf6b0f6",
           "version": "0.15.0"
+        }
+      },
+      {
+        "package": "Curry",
+        "repositoryURL": "https://github.com/thoughtbot/Curry.git",
+        "state": {
+          "branch": null,
+          "revision": "b6bf27ec9d711f607a8c7da9ca69ee9eaa201a22",
+          "version": "4.0.1"
         }
       },
       {
@@ -78,8 +87,8 @@
         "repositoryURL": "https://github.com/antitypical/Result.git",
         "state": {
           "branch": null,
-          "revision": "8fc088dcf72802801efeecba76ea8fb041fb773d",
-          "version": "4.0.0"
+          "revision": "2ca499ba456795616fbc471561ff1d963e6ae160",
+          "version": "4.1.0"
         }
       },
       {

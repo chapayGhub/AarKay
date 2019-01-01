@@ -4,15 +4,22 @@ SHORT_NAME = rk
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(INSTALL_NAME)
+DEV_INSTALL_PATH = $(PREFIX)/bin/$(SHORT_NAME)d
 BUILD_PATH = .build/release/$(TOOL_NAME)
 
-.PHONY: install build uninstall
+.PHONY: build dev install uninstall
 
 install: build
 	set -e
 	mkdir -p $(PREFIX)/bin
 	cp -f $(BUILD_PATH) $(INSTALL_PATH)
 	ln -s $(INSTALL_PATH) $(PREFIX)/bin/$(SHORT_NAME)
+
+dev: build
+	set -e
+	mkdir -p $(PREFIX)/bin
+	rm -f $(DEV_INSTALL_PATH)
+	cp -f $(BUILD_PATH) $(DEV_INSTALL_PATH)
 
 build:
 	set -e

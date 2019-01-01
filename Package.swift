@@ -1,4 +1,4 @@
-// swift-tools-version:4.0
+// swift-tools-version:4.2
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -26,6 +26,7 @@ let package = Package(
         /* ------------------------------------------------------ */
         /* >>> Runner ------------------------------------------- */
         /* ------------------------------------------------------ */
+        .package(url: "https://github.com/thoughtbot/Curry.git", .upToNextMajor(from: "4.0.0")),
         .package(url: "https://github.com/Carthage/Commandant.git", .upToNextMinor(from: "0.15.0")),
         .package(url: "https://github.com/RahulKatariya/ReactiveTask.git", .upToNextMinor(from: "0.15.0")),
     ],
@@ -42,8 +43,8 @@ let package = Package(
         ),
         .target(
             name: "AarKayRunner",
-            dependencies: ["Commandant", "ReactiveTask"]
+            dependencies: ["Commandant", "ReactiveTask", "Curry"]
         ),
     ],
-    swiftLanguageVersions: [4]
+    swiftLanguageVersions: [.v4, .v4_2]
 )

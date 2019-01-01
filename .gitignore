@@ -100,3 +100,7 @@ node_modules/
 
 # Docker
 buildContext.tar
+
+# AarKay
+#
+AarKay/AarKayRunner
