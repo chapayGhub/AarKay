@@ -38,7 +38,7 @@ class RunnerFiles {
         }
         
         let dependencies = urls.reduce("") { (result, item) -> String in
-            return result + " \"" + item.0.deletingPathExtension().lastPathComponent + "\","
+            return result + "\n                \"" + item.0.deletingPathExtension().lastPathComponent + "\","
         }
         
         return """
@@ -51,12 +51,16 @@ class RunnerFiles {
             products: [
                 .executable(name: "aarkay-cli", targets: ["aarkay-cli"])],
             dependencies: [
-                .package(url: "https://github.com/RahulKatariya/AarKay.git", .upToNextMinor(from: "0.0.0")),
-                .package(url: "https://github.com/RahulKatariya/AarKayKit.git", .upToNextMinor(from: "0.0.0")),\(packages)],
+                .package(url: "https://github.com/RahulKatariya/AarKay.git", .upToNextMinor(from: "0.0.0")),\(packages)
+            ],
             targets: [
                 .target(
                     name: "aarkay-cli",
-                    dependencies: ["AarKay", "AarKayKit", "AarKayPlugin",\(dependencies)],
+                    dependencies: [
+                        "AarKay",
+                        "AarKayKit",
+                        "AarKayPlugin",\(dependencies)
+                    ],
                     path: "Sources/AarKayCLI"),],
             swiftLanguageVersions: [.v4, .v4_2]
         )

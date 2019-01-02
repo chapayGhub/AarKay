@@ -1,0 +1,120 @@
+//     _____                  ____  __.
+//    /  _  \ _____ _______  |    |/ _|____  ___.__.
+//   /  /_\  \\__  \\_  __ \ |      < \__  \<   |  |
+//  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
+//  \____|__  (____  /__|    |____|__ (____  / ____|
+//          \/     \/                \/    \/\/
+//
+
+import Foundation
+import AarKayKit
+{% if isPlugin %}
+import AarKayPlugin
+{% endif %}
+{% for import in imports %}
+import {{import}}
+{% endfor %}
+{% if isTemplate %}
+
+public class {{name}}: {% if base %}{{base}}{% else %}NSObject, Templatable{% endif %} {
+
+    private var model: {{name}}Model
+    {% if not base %}
+    public var generatedfile: Generatedfile
+    {% endif %}
+
+    public required init?(generatedfile: Generatedfile) throws {
+        guard let contents = generatedfile.contents else { return nil }
+        self.model = try contents.decode(type: {{name}}Model.self)
+        {% if base %}try super.init(generatedfile: generatedfile){% endif %}
+        var generatedfile = generatedfile
+        generatedfile.contents = try Dictionary.encode(data: model)
+        self.generatedfile = generatedfile
+    }
+    {% if not base %}
+
+    public static func resource() -> String {
+        return #file
+    }
+    {% endif %}
+    
+    {% if inputSerializer %}
+
+    public static func inputSerializer(
+        components: FileComponents,
+        contents: String
+        ) -> InputSerializable {
+        return {{inputSerializer}}InputSerializer(components: components, contents: contents)
+    }
+    {% endif %}
+
+}
+{% endif %}
+
+{% if not allProperties %}
+public class {{name}}Model: {% if base %}{{base}}Model{% else %}Codable{% endif %} {}
+{% else %}
+public class {{name}}Model: {% if base %}{{base}}Model{% else %}Codable{% endif %} {
+    
+    {% for property in properties %}
+    public var {{property.name}}: {{property.type}}
+    {% endfor %}
+    {% if computedProperties %}
+    {% for property in computedProperties %}
+
+    public var {{property.name}}: {{property.type}} {
+        /// <aarkay {{property.name}}>
+        /// your code goes here.
+        /// </aarkay>
+    }
+    {% endfor %}
+    {% endif %}
+
+    private enum CodingKeys: String, CodingKey {
+        {% for property in allProperties %}
+        case {{property.name}}
+        {% endfor %}
+    }
+    {% if properties %}
+
+    {% if base %}override {% endif %}public init({% for property in requiredAllProperties %}{{property.name}}: {{property.type}}{% if not forloop.last %}, {% endif %}{% endfor %}) {
+        {% for property in requiredProperties %}
+        self.{{property.name}} = {{property.name}}
+        {% endfor %}
+        {% if base %}
+        super.init({% for property in requiredBaseProperties %}{{property.name}}: {{property.name}}{% if not forloop.last %}, {% endif %}{% endfor %})
+        {% endif %}
+    }
+    {% if not customDecoder %}
+
+    public required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        {% for property in properties %}
+        self.{{property.name}} = try container.decode{% if property.isOptionalOrWrapped %}IfPresent{% endif %}({{property.swiftType}}.self, forKey: .{{property.name}}){% if property.value %} ?? {{property.value}} {% endif %}
+        {% endfor %}
+        {% if base %}
+        try super.init(from: decoder)
+        {% endif %}
+    }
+    {% else %}
+
+    public required init(from decoder: Decoder) throws {
+        /// <aarkay decoder>
+        /// your code goes here.
+        /// </aarkay>
+    }
+    {% endif %}
+    {% endif %}
+
+    public{% if base %} override{% endif %} func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        {% for property in allProperties %}
+        try container.encode{% if property.isOptional %}IfPresent{% endif %}({{property.name}}, forKey: .{{property.name}})
+        {% endfor %}
+        {% if base %}
+        try super.encode(to: encoder)
+        {% endif %}
+    }
+
+}
+{% endif %}
