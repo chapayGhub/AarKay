@@ -19,9 +19,13 @@ class Runner {
     static func bootstrap(global: Bool = false, force: Bool = false) throws {
         if force {
             let buildUrl = URL.buildPath(global: global)
-            try FileManager.default.removeItem(at: buildUrl)
+            if FileManager.default.fileExists(atPath: buildUrl.path) {
+                try FileManager.default.removeItem(at: buildUrl)
+            }
             let packageResolvedUrl = URL.packageResolved(global: global)
-            try FileManager.default.removeItem(at: packageResolvedUrl)
+            if FileManager.default.fileExists(atPath: packageResolvedUrl.path) {
+                try FileManager.default.removeItem(at: packageResolvedUrl)
+            }
         }
         try createCLISwift(global: global, force: force)
         try updatePackageSwift(global: global)
@@ -90,7 +94,11 @@ class Runner {
     ///   - force: Setting force to true will delete all the files before creating them.
     /// - Throws: File manager errors
     private static func write(string: String, url: URL, force: Bool) throws {
-        if force { try FileManager.default.removeItem(at: url) }
+        if force {
+            if FileManager.default.fileExists(atPath: url.path) {
+                try FileManager.default.removeItem(at: url)
+            }
+        }
         try FileManager.default.createDirectory(
             at: url.deletingLastPathComponent(),
             withIntermediateDirectories: true,
