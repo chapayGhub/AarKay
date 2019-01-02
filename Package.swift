@@ -63,6 +63,10 @@ let package = Package(
             dependencies: ["Commandant", "ReactiveTask", "Curry"]
         ),
         .testTarget(
+            name: "AarKayTests",
+            dependencies: ["AarKay", "Quick", "Nimble"]
+        ),
+        .testTarget(
             name: "AarKayPluginTests",
             dependencies: ["AarKayPlugin", "Quick", "Nimble"]
         ),
