@@ -7,6 +7,8 @@ let package = Package(
     name: "AarKay",
     products: [
         .library(name: "AarKay", targets: ["AarKay"]),
+        .library(name: "AarKayKit", targets: ["AarKayKit"]),
+        .library(name: "AarKayPlugin", targets: ["AarKayPlugin"]),
         .executable(name: "AarKayCLI", targets: ["AarKayCLI"]),
         .executable(name: "AarKayRunner", targets: ["AarKayRunner"]),
     ],
@@ -14,9 +16,11 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         /* ------------------------------------------------------ */
-        /* >>> AarKay ------------------------------------------- */
+        /* >>> AarKayKit ------------------------------------------- */
         /* ------------------------------------------------------ */
-        .package(url: "https://github.com/RahulKatariya/AarKayKit.git", .upToNextMajor(from: "0.0.0")),
+        .package(url: "https://github.com/SwiftGen/StencilSwiftKit.git", .upToNextMajor(from: "2.5.0")),
+        .package(url: "https://github.com/jpsim/Yams.git", .upToNextMajor(from: "1.0.0")),
+        .package(url: "https://github.com/antitypical/Result.git", .upToNextMajor(from: "4.0.0")),
         /* ------------------------------------------------------ */
         /* >>> CLI ---------------------------------------------- */
         /* ------------------------------------------------------ */
@@ -29,6 +33,11 @@ let package = Package(
         .package(url: "https://github.com/thoughtbot/Curry.git", .upToNextMajor(from: "4.0.0")),
         .package(url: "https://github.com/Carthage/Commandant.git", .upToNextMinor(from: "0.15.0")),
         .package(url: "https://github.com/RahulKatariya/ReactiveTask.git", .upToNextMinor(from: "0.15.0")),
+        /* ------------------------------------------------------ */
+        /* >>> Testing ------------------------------------------ */
+        /* ------------------------------------------------------ */
+        .package(url: "https://github.com/Quick/Quick.git", .upToNextMajor(from: "1.0.0")),
+        .package(url: "https://github.com/Quick/Nimble.git", .upToNextMajor(from: "7.0.0")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -38,12 +47,28 @@ let package = Package(
             dependencies: ["AarKayKit", "PrettyColors", "SwiftyTextTable", "Willow"]
         ),
         .target(
+            name: "AarKayKit",
+            dependencies: ["StencilSwiftKit", "Result", "Yams"]
+        ),
+          .target(
+            name: "AarKayPlugin",
+            dependencies: ["AarKayKit"]
+        ),
+        .target(
             name: "AarKayCLI",
             dependencies: ["AarKay", "AarKayPlugin"]
         ),
         .target(
             name: "AarKayRunner",
             dependencies: ["Commandant", "ReactiveTask", "Curry"]
+        ),
+        .testTarget(
+            name: "AarKayPluginTests",
+            dependencies: ["AarKayPlugin", "Quick", "Nimble"]
+        ),
+        .testTarget(
+            name: "AarKayKitTests",
+            dependencies: ["AarKayKit", "Quick", "Nimble"]
         ),
     ],
     swiftLanguageVersions: [.v4, .v4_2]

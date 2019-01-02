@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "AarKayKit",
-        "repositoryURL": "https://github.com/RahulKatariya/AarKayKit.git",
-        "state": {
-          "branch": null,
-          "revision": "53cb2432ee3eba26ce32e61d2aa40f4e453eea8d",
-          "version": "0.0.32"
-        }
-      },
-      {
         "package": "Commandant",
         "repositoryURL": "https://github.com/Carthage/Commandant.git",
         "state": {
