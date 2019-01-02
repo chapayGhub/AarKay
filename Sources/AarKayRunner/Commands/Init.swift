@@ -33,7 +33,7 @@ struct InitCommand: CommandProtocol {
             return .failure(.projectAlreadyExists(url.path))
         } else {
             do {
-                try Runner.bootstrap(global: options.global, force: options.force)
+                try Bootstrapper.bootstrap(global: options.global, force: options.force)
             } catch {
                 return .failure(.bootstap(error))
             }

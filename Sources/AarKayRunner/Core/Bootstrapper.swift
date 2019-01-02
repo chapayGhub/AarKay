@@ -1,5 +1,5 @@
 //
-//  Runner.swift
+//  Bootstrapper.swift
 //  AarKayRunner
 //
 //  Created by Rahul Katariya on 04/03/18.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// Type that encapsulates creation of all files required by `AarKayRunner`.
-class Runner {
+class Bootstrapper {
 
     /// Creates all files required to run `AarKay`.
     ///
@@ -30,7 +30,7 @@ class Runner {
         try createCLISwift(global: global, force: force)
         try updatePackageSwift(global: global)
         try createSwiftVersion(global: global, force: force)
-        try createAarKayFile(global: global, force: force)
+        try createAarKayFile(global: global)
     }
 
     /// Creates CLI main.swift file
@@ -55,15 +55,16 @@ class Runner {
         try write(string: RunnerFiles.swiftVersion, url: url, force: force)
     }
 
-    /// Creates `AarKayFile`.
+    /// Creates `AarKayFile` if it doesn't exist already.
     ///
     /// - Parameters:
     ///   - global: Setting global to true will bootstrap the `AarKay` project inside home directory otherwise will setup in the local directory.
-    ///   - force: Setting force to true will delete all the files before creating them.
     /// - Throws: File manager errors
-    private static func createAarKayFile(global: Bool, force: Bool = false) throws {
+    private static func createAarKayFile(global: Bool) throws {
         let url = URL.aarkayFile(global: global)
-        try write(string: RunnerFiles.aarkayFile, url: url, force: force)
+        if !FileManager.default.fileExists(atPath: url.path) {
+            try write(string: RunnerFiles.aarkayFile, url: url, force: false)
+        }
     }
     
     /// Updates `Package.swift` with `AarKayFile` dependencies.

@@ -32,7 +32,7 @@ struct InstallCommand: CommandProtocol {
         }
         
         do {
-            try Runner.updatePackageSwift(global: options.global)
+            try Bootstrapper.updatePackageSwift(global: options.global)
         } catch {
             return .failure(.bootstap(error))
         }
