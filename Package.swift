@@ -14,7 +14,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
         /* ------------------------------------------------------ */
-        /* >>> AarKayKit ---------------------------------------- */
+        /* >>> AarKay ------------------------------------------- */
         /* ------------------------------------------------------ */
         .package(url: "https://github.com/RahulKatariya/AarKayKit.git", .upToNextMajor(from: "0.0.0")),
         /* ------------------------------------------------------ */

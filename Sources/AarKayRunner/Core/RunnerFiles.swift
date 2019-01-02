@@ -27,8 +27,7 @@ class RunnerFiles {
     static let swiftVersion = "4.2.1"
     
     /// An empty aarkay string that will contain user installed plugins.
-    static let aarkayFile = """
-    """
+    static let aarkayFile = ""
 
     /// The package description string for `AarKayRunner`
     static func packageSwift(urls: [URL]) -> String {
