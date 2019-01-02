@@ -73,15 +73,15 @@ class Runner {
     /// - Throws: File manager errors
     static func updatePackageSwift(global: Bool) throws {
         let aarkayFileUrl = URL.aarkayFile(global: global)
-        var urls: [URL] = []
+        var urlsAndVersions: [(URL, String)] = []
         if let lines = try? String(contentsOf: aarkayFileUrl).components(separatedBy: .newlines) {
-            let depUrls = lines
-                .filter { !$0.isEmpty }
-                .map { URL.init(string: $0) }
-                .compactMap { $0 }
-            urls = urls + depUrls
+            let lines = lines.filter { !$0.isEmpty }
+            let depUrls = lines.map { URL.init(string: $0) }.compactMap { $0 }
+            let depVersions = Array<String>(repeating: "0.0.0", count: lines.count)
+            let depUrlsAndVersions = zip(depUrls, depVersions)
+            urlsAndVersions = urlsAndVersions + depUrlsAndVersions
         }
-        let contents = RunnerFiles.packageSwift(urls: urls)
+        let contents = RunnerFiles.packageSwift(urls: urlsAndVersions)
         let url = URL.packageSwift(global: global)
         try write(string: contents, url: url, force: true)
     }

@@ -30,15 +30,15 @@ class RunnerFiles {
     static let aarkayFile = ""
 
     /// The package description string for `AarKayRunner`
-    static func packageSwift(urls: [URL]) -> String {
-        let packages = urls.reduce("") { (result, url) -> String in
+    static func packageSwift(urls: [(URL, String)]) -> String {
+        let packages = urls.reduce("") { (result, item) -> String in
             return result + """
-            \n        .package(url: "\(url.path)", .upToNextMinor(from: "0.0.0")),
+            \n        .package(url: "\(item.0.path)", .upToNextMinor(from: "\(item.1)")),
             """
         }
         
-        let dependencies = urls.reduce("") { (result, url) -> String in
-            return result + " \"" + url.deletingPathExtension().lastPathComponent + "\","
+        let dependencies = urls.reduce("") { (result, item) -> String in
+            return result + " \"" + item.0.deletingPathExtension().lastPathComponent + "\","
         }
         
         return """
