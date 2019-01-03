@@ -1,0 +1,6 @@
+#!bin/sh
+
+set -e
+
+echo ">>> Running"
+swift run -Xswiftc "-target" -Xswiftc "x86_64-apple-macosx10.12"

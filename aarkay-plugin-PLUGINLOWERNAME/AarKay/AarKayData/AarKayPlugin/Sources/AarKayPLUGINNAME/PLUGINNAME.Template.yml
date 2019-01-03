@@ -1,0 +1,4 @@
+name: PLUGINNAME
+isTemplate: true
+properties:
+  - name|String
