@@ -14,7 +14,7 @@
       location = "group:aarkay-plugin-PLUGINLOWERNAME">
    </FileRef>
    <FileRef
-      location = "group:cookiecutter.json">
+      location = "group:scripts">
    </FileRef>
    <FileRef
       location = "group:hooks">
@@ -23,21 +23,21 @@
       location = "group:IntegrationTests">
    </FileRef>
    <FileRef
-      location = "group:Makefile">
+      location = "group:settings.xcconfig">
    </FileRef>
    <FileRef
-      location = "group:Package.resolved">
+      location = "group:cookiecutter.json">
    </FileRef>
    <FileRef
       location = "group:Package.swift">
    </FileRef>
    <FileRef
+      location = "group:Package.resolved">
+   </FileRef>
+   <FileRef
+      location = "group:Makefile">
+   </FileRef>
+   <FileRef
       location = "group:README.md">
-   </FileRef>
-   <FileRef
-      location = "group:settings.xcconfig">
-   </FileRef>
-   <FileRef
-      location = "group:template.sh">
    </FileRef>
 </Workspace>
