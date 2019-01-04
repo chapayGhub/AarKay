@@ -74,8 +74,10 @@ class Bootstrapper {
     /// - Throws: File manager errors
     static func updatePackageSwift(global: Bool) throws {
         let aarkayFileUrl = URL.aarkayFile(global: global)
-        var deps: [PackageDependency] = []
-        
+        let deps: [PackageDependency] = try AarKayFile(url: aarkayFileUrl).dependecies
+        let contents = RunnerFiles.packageSwift(deps: deps)
+        let url = URL.packageSwift(global: global)
+        try write(string: contents, url: url, force: true)
     }
     
     /// Writes the string to the destination url atomically and using .utf8 encoding.

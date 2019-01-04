@@ -8,19 +8,16 @@
 import Foundation
 
 struct AarKayFile {
+    let dependecies: [PackageDependency]
     
-    func deps() throws {
-        if let lines = try? String(contentsOf: aarkayFileUrl).components(separatedBy: .newlines) {
+    init(url: URL) throws {
+        if let lines = try? String(contentsOf: url).components(separatedBy: .newlines) {
             let lines = lines.filter { !$0.isEmpty }
-            deps = try lines.map { try PackageDependency(string: $0) }
-            let contents = RunnerFiles.packageSwift(deps: deps)
-            let url = URL.packageSwift(global: global)
-            try write(string: contents, url: url, force: true)
+            dependecies = try lines.map { try PackageDependency(string: $0) }
         } else {
             throw AarKayError.parsingError
         }
     }
-    
 }
 
 struct PackageDependency {
