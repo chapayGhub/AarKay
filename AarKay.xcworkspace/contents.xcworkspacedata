@@ -11,9 +11,6 @@
       location = "group:aarkay-plugin-{{ cookiecutter.name|lower }}">
    </FileRef>
    <FileRef
-      location = "group:aarkay-plugin-PLUGINLOWERNAME">
-   </FileRef>
-   <FileRef
       location = "group:scripts">
    </FileRef>
    <FileRef
