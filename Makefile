@@ -1,7 +1,7 @@
 TOOL_NAME = AarKayRunner 
 INSTALL_NAME = aarkay
 SHORT_NAME = rk
-version = "0.0.13"
+version = "v0.0.14"
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(INSTALL_NAME)
@@ -24,11 +24,11 @@ dev: build
 
 release: build 
 	set -e
-	rm -f AarKay-v${version}.zip
+	rm -f AarKay-${version}.zip
 	rm -rf bin && mkdir -p bin
 	cp -f -f $(BUILD_PATH) bin/$(INSTALL_NAME)
-	zip -r AarKay-v${version}.zip bin/$(INSTALL_NAME)
-	shasum -a 256 -b AarKay-v${version}.zip | awk '{print $$1}'
+	zip -r AarKay-${version}.zip bin/$(INSTALL_NAME)
+	shasum -a 256 -b AarKay-${version}.zip | awk '{print $$1}'
 	rm -rf bin 
 
 build:
