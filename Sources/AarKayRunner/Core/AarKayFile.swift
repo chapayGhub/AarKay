@@ -8,7 +8,7 @@
 import Foundation
 
 struct PackageDependency {
-    enum Version {
+    enum VersionType {
         case exact(String)
         case upToMajor(String)
         case upToMinor(String)
@@ -17,16 +17,18 @@ struct PackageDependency {
         
         init(string: String) throws {
             let str = string.trimmingCharacters(in: .whitespacesAndNewlines)
-            if str.hasPrefix("> ") {
-                let startIndex = str.index(str.startIndex, offsetBy: 2)
-                let version = String(str[startIndex...])
-                guard version.components(separatedBy: ".").count == 3 else { throw AarKayError.parsingError }
-                self = .upToMajor(version.trimmingCharacters(in: .whitespacesAndNewlines))
-            } else if str.hasPrefix("~> ") {
+            if str.hasPrefix("~> ") {
                 let startIndex = str.index(str.startIndex, offsetBy: 3)
                 let version = String(str[startIndex...])
-                guard version.components(separatedBy: ".").count == 3 else { throw AarKayError.parsingError }
-                self = .upToMinor(version.trimmingCharacters(in: .whitespacesAndNewlines))
+                let components = version.components(separatedBy: ".")
+                guard components.count == 2 || components.count == 3 else {
+                    throw AarKayError.parsingError
+                }
+                if components.count == 2 {
+                    self = .upToMajor(version + ".0")
+                } else {
+                    self = .upToMinor(version)
+                }
             } else if str.hasPrefix("b-") {
                 let startIndex = str.index(str.startIndex, offsetBy: 2)
                 let version = String(str[startIndex...])
@@ -56,13 +58,13 @@ struct PackageDependency {
     }
 
     let url: String
-    let version: Version
+    let version: VersionType
     
     init(string: String) throws {
         let comps = string.components(separatedBy: ",")
         guard comps.count == 2 else { throw AarKayError.parsingError }
         self.url = comps[0].trimmingCharacters(in: .whitespaces)
-        try self.version = Version(string: comps[1].trimmingCharacters(in: .whitespacesAndNewlines))
+        try self.version = VersionType(string: comps[1].trimmingCharacters(in: .whitespacesAndNewlines))
     }
     
     func packageDescription() -> String {
