@@ -39,14 +39,21 @@ There are plenty of tutorials for different uses of AarKay:
 
 Plugins allows you to
 
-- Modify [Datafile](https://github.com/RahulKatariya/AarKay/blob/master/guides/Datafile.md) data before it is applied to the [Template](https://github.com/RahulKatariya/AarKay/blob/master/guides/Templatefile.md)
-- Modify Generatedfile name and specify subdirectory
-- Generates multiple files of any type with the same data
+- Process and Modify [Datafile](https://github.com/RahulKatariya/AarKay/blob/master/guides/Datafile.md) data before it is applied to the [Template](https://github.com/RahulKatariya/AarKay/blob/master/guides/Templatefile.md).
+- Modify Generatedfile name and directory.
+- Generates multiple files of any type with the same data.
 
 ### Available Plugins
 
 - [Restofire](https://github.com/Restofire/aarkay-plugin-restofire)
 - [CoreData](https://github.com/RahulKatariya/aarkay-plugin-coredata)
+- [Uber RIBs](https://github.com/RahulKatariya/aarkay-plugin-uberribs)
+
+# Attributions
+
+- [Stencil](https://github.com/stencilproject/Stencil)
+- [Yams](https://github.com/jpsim/Yams)
+- [Commandant](https://github.com/Carthage/Commandant.git)
 
 # Contributing
 
