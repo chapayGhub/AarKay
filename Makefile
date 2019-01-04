@@ -1,7 +1,7 @@
 TOOL_NAME = AarKayRunner 
 INSTALL_NAME = aarkay
 SHORT_NAME = rk
-version = "v0.0.14"
+version = "v0.0.15"
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(INSTALL_NAME)
