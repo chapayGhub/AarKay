@@ -11,14 +11,17 @@ replace "PLUGINSUMMARY" "{{ cookiecutter.summary }}"
 replace "PLUGINGITHUB" "{{ cookiecutter.github }}"
 
 # Do Renames
-LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME -type f -exec rename -p -S "AarKayPLUGINNAME" "AarKay{{ cookiecutter.name }}" {} +
-LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME -type f -exec rename -p -S "AarKayPLUGINNAMECLI" "AarKay{{ cookiecutter.name }}CLI" {} +
-LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME -type f -exec rename -p -S "PLUGINNAME.Template.yml" "{{ cookiecutter.name }}.Template.yml" {} +
-LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME -type f -exec rename -p -S "PLUGINNAME.txt.stencil" "{{ cookiecutter.name }}.txt.stencil" {} +
-LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME -type f -exec rename -p -S "PLUGINNAME.yml" "{{ cookiecutter.name }}.yml" {} +
-LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME -type f -exec rename -p -S "PLUGINNAME.swift" "{{ cookiecutter.name }}.swift" {} +
-LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME -type f -exec rename -p -S "PLUGINLOWERNAME" "{{ cookiecutter.name|lower }}" {} +
-LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME -type f -exec rename -p -S "aarkay-plugin-PLUGINLOWERNAME" "aarkay-plugin-{{ cookiecutter.name|lower }}" {} +
+function rename {
+  LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME -type f -exec rename -p -S "$1" "$2" {} +
+}
+rename "AarKayPLUGINNAME" "AarKay{{ cookiecutter.name }}"
+rename "AarKayPLUGINNAMECLI" "AarKay{{ cookiecutter.name }}CLI"
+rename "PLUGINNAME.Template.yml" "{{ cookiecutter.name }}.Template.yml"
+rename "PLUGINNAME.txt.stencil" "{{ cookiecutter.name }}.txt.stencil"
+rename "PLUGINNAME.yml" "{{ cookiecutter.name }}.yml"
+rename "PLUGINNAME.swift" "{{ cookiecutter.name }}.swift"
+rename "PLUGINLOWERNAME" "{{ cookiecutter.name|lower }}"
+rename "aarkay-plugin-PLUGINLOWERNAME" "aarkay-plugin-{{ cookiecutter.name|lower }}"
 
 rm -rf .github/aarkay-plugin-PLUGINLOWERNAME
 mv .github/aarkay-plugin-PLUGINLOWERNAME.bak .github/aarkay-plugin-PLUGINLOWERNAME
