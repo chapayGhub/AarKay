@@ -10,6 +10,7 @@ registry.register(InitCommand())
 registry.register(InstallCommand())
 registry.register(RunCommand())
 registry.register(UpdateCommand())
+registry.register(VersionCommand())
 registry.register(HelpCommand(registry: registry))
 
 /// Setting the default command to `run` instead of `help`.
