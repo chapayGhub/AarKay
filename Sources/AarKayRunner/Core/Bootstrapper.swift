@@ -75,15 +75,7 @@ class Bootstrapper {
     static func updatePackageSwift(global: Bool) throws {
         let aarkayFileUrl = URL.aarkayFile(global: global)
         var deps: [PackageDependency] = []
-        if let lines = try? String(contentsOf: aarkayFileUrl).components(separatedBy: .newlines) {
-            let lines = lines.filter { !$0.isEmpty }
-            deps = try lines.map { try PackageDependency(string: $0) }
-            let contents = RunnerFiles.packageSwift(deps: deps)
-            let url = URL.packageSwift(global: global)
-            try write(string: contents, url: url, force: true)
-        } else {
-            throw AarKayError.parsingError
-        }
+        
     }
     
     /// Writes the string to the destination url atomically and using .utf8 encoding.
