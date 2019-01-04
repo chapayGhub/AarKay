@@ -16,6 +16,8 @@ public enum AarKayError: Error {
     case projectAlreadyExists(String)
     /// Represents error where command is executed without setting up the project in the given path.
     case missingProject(String)
+    /// Represents AarKayFile parsing error
+    case parsingError
     /// Represents task related error occuring to execution of commands.
     case taskError(TaskError)
 }
@@ -30,6 +32,8 @@ extension AarKayError: CustomStringConvertible {
             return "Project already exists at \(path). Use `--force` to start over."
         case .missingProject(let path):
             return "AarKay is not yet setup at \(path). Use `aarkay init [--global]` to setup."
+        case .parsingError:
+            return "Error parsing AarKayFile"
         case .taskError(let error):
             return error.localizedDescription
         }

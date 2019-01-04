@@ -27,18 +27,20 @@ class RunnerFiles {
     static let swiftVersion = "4.2.1"
     
     /// An empty aarkay string that will contain user installed plugins.
-    static let aarkayFile = ""
+    static let aarkayFile = """
+    https://github.com/RahulKatariya/AarKay.git, ~> \(version)
+    """
 
     /// The package description string for `AarKayRunner`
-    static func packageSwift(urls: [(URL, String)]) -> String {
-        let packages = urls.reduce("") { (result, item) -> String in
+    static func packageSwift(deps: [PackageDependency]) -> String {
+        let packages = deps.reduce("") { (result, item) -> String in
             return result + """
-            \n        .package(url: "\(item.0.path)", .upToNextMinor(from: "\(item.1)")),
+            \n        \(item.packageDescription())
             """
         }
         
-        let dependencies = urls.reduce("") { (result, item) -> String in
-            return result + "\n                \"" + item.0.deletingPathExtension().lastPathComponent + "\","
+        let dependencies = deps.reduce("") { (result, item) -> String in
+            return result + "\n                \(item.targetDescription())"
         }
         
         return """
@@ -50,14 +52,12 @@ class RunnerFiles {
             name: "AarKayRunner",
             products: [
                 .executable(name: "aarkay-cli", targets: ["aarkay-cli"])],
-            dependencies: [
-                .package(url: "https://github.com/RahulKatariya/AarKay.git", .upToNextMinor(from: "0.0.0")),\(packages)
+            dependencies: [\(packages)
             ],
             targets: [
                 .target(
                     name: "aarkay-cli",
                     dependencies: [
-                        "AarKay",
                         "AarKayKit",
                         "AarKayPlugin",\(dependencies)
                     ],
