@@ -28,9 +28,9 @@ class Bootstrapper {
             }
         }
         try createCLISwift(global: global, force: force)
+        try createAarKayFile(global: global)
         try updatePackageSwift(global: global)
         try createSwiftVersion(global: global, force: force)
-        try createAarKayFile(global: global)
     }
 
     /// Creates CLI main.swift file

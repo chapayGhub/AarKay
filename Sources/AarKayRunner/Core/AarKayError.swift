@@ -35,7 +35,7 @@ extension AarKayError: CustomStringConvertible {
         case .parsingError:
             return "Error parsing AarKayFile"
         case .taskError(let error):
-            return error.localizedDescription
+            return error.description
         }
     }
 }
