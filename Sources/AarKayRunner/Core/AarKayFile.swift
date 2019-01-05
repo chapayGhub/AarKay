@@ -70,25 +70,28 @@ struct PackageDependency {
         }
     }
 
-    let url: String
+    let url: URL
     let version: VersionType
     
     init(string: String) throws {
         let comps = string.components(separatedBy: ",")
-        guard comps.count == 2 else { throw AarKayError.parsingError }
-        self.url = comps[0].trimmingCharacters(in: .whitespaces)
+        guard comps.count == 2,
+            let url = URL(string: comps[0].trimmingCharacters(in: .whitespaces)) else {
+                throw AarKayError.parsingError
+        }
+        self.url = url
         try self.version = VersionType(string: comps[1].trimmingCharacters(in: .whitespacesAndNewlines))
     }
     
     func packageDescription() -> String {
-        return ".package(url: \"\(url)\", \(version.description())),"
+        var path = self.url.absoluteString
+        if path.hasPrefix("./") { path = "./." + path }
+        return ".package(url: \"\(path)\", \(version.description())),"
     }
     
     func targetDescription() -> String {
-        var url = URL(fileURLWithPath: self.url)
-        if url.path.hasSuffix(".git") {
-            url = url.deletingPathExtension()
-        }
+        var url = self.url
+        if url.path.hasSuffix(".git") { url = url.deletingPathExtension() }
         return "\"\(url.lastPathComponent)\","
     }
 }
