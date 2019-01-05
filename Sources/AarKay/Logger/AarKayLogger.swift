@@ -34,9 +34,9 @@ class AarKayLogger {
     ///   - url: The url of the `Project`.
     ///   - datafilesUrl: The url of the `Datafiles`.
     static func logTable(url: URL, datafilesUrl: URL) {
-        let column = TextTableColumn(header: "🚀 Launch---i--n--g--> " + url.path)
+        let column = TextTableColumn(header: "🚀 Launch---i--n--g--> " + url.relativeString)
         var table = TextTable(columns: [column])
-        table.addRow(values: ["🙏🏻 AarKayData-------> " + datafilesUrl.path])
+        table.addRow(values: ["🙏🏻 AarKayData-------> " + datafilesUrl.relativeString])
         AarKayLogger.default.errorMessage { table.render().magenta }
     }
     
@@ -91,6 +91,6 @@ class AarKayLogger {
     ///
     /// - Parameter url: The url of the skipped file.
     static func logFileSkipped(at url: URL) {
-        AarKayLogger.default.eventMessage { "   <-> \(url.absoluteString)" }
+        AarKayLogger.default.eventMessage { "   <-> \(url.relativeString)" }
     }
 }
