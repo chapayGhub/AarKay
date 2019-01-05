@@ -34,9 +34,9 @@ class AarKayLogger {
     ///   - url: The url of the `Project`.
     ///   - datafilesUrl: The url of the `Datafiles`.
     static func logTable(url: URL, datafilesUrl: URL) {
-        let column = TextTableColumn(header: "🚀 Launch---i--n--g--> " + url.relativeString)
+        let column = TextTableColumn(header: "🚀 Launch---i--n--g--> " + url.path)
         var table = TextTable(columns: [column])
-        table.addRow(values: ["🙏🏻 AarKayData-------> " + datafilesUrl.relativeString])
+        table.addRow(values: ["🙏🏻 AarKayData-------> " + datafilesUrl.path])
         AarKayLogger.default.errorMessage { table.render().magenta }
     }
     

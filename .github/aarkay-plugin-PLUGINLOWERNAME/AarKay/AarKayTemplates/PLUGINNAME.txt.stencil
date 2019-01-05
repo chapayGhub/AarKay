@@ -1,1 +1,1 @@
-Hello AarKay
+Hello {{ name }}
