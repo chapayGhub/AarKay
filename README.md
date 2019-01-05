@@ -35,6 +35,7 @@ There are plenty of tutorials for different uses of AarKay:
 - [How to get started with AarKay](https://aarkay.gitbook.io/docs/)
 - [AarKay - A code generation framework for all languages](https://medium.com/rahulkatariya/aarkay-a-code-generator-for-all-developers-65f3803db704)
 - [Swift Networking Code Generation using AarKay](https://medium.com/rahulkatariya/generating-swift-network-code-using-aarkay-64ad6d49d337)
+- [Revelation App - Pushing AarKay to its limits](https://github.com/RevelationApp/Revelation)
 
 # Plugins
 
