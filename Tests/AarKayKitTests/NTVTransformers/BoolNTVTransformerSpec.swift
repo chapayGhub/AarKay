@@ -16,80 +16,82 @@ class BoolNTVTransformerSpec: QuickSpec {
         
         describe("BoolNTVTransformer") {
             
-            ["Bool", "Bool?", "Bool!"].forEach { type in
-                
-                context("when value is true") {
-                    it("should be true with \(type) Type") {
-                        guard let expected = TypeValueTransformer(type: type, value: "true")?.value as? Bool else {
-                            fail("It should return the type as \(type)")
-                            return
-                        }
-                        
-                        expect(expected).to(beTruthy())
+            context("when value is true") {
+                it("should be true with Bool Type") {
+                    let value = TypeValueTransformer(type: "Bool", value: "true")?.value
+                    guard let expected = value as? Bool else {
+                        fail("It should return the type as Bool")
+                        return
                     }
+                    
+                    expect(expected).to(beTruthy())
                 }
-                
-                context("when value is yes") {
-                    it("should be true with \(type) Type") {
-                        guard let expected = TypeValueTransformer(type: type, value: "yes")?.value as? Bool else {
-                            fail("It should return the type as Bool")
-                            return
-                        }
-                        
-                        expect(expected).to(beTruthy())
+            }
+            
+            context("when value is yes") {
+                it("should be true with Bool Type") {
+                    let value = TypeValueTransformer(type: "Bool", value: "yes")?.value
+                    guard let expected = value as? Bool else {
+                        fail("It should return the type as Bool")
+                        return
                     }
+                    
+                    expect(expected).to(beTruthy())
                 }
-                
-                context("when value is 1") {
-                    it("should be true with \(type) Type") {
-                        guard let expected = TypeValueTransformer(type: type, value: "1")?.value as? Bool else {
-                            fail("It should return the type as Bool")
-                            return
-                        }
-                        
-                        expect(expected).to(beTruthy())
+            }
+            
+            context("when value is 1") {
+                it("should be true with Bool Type") {
+                    let value = TypeValueTransformer(type: "Bool", value: "1")?.value
+                    guard let expected = value as? Bool else {
+                        fail("It should return the type as Bool")
+                        return
                     }
+                    
+                    expect(expected).to(beTruthy())
                 }
-                
-                context("when value is false") {
-                    it("should be false with \(type) Type") {
-                        guard let expected = TypeValueTransformer(type: type, value: "false")?.value as? Bool else {
-                            fail("It should return the type as Bool")
-                            return
-                        }
-                        
-                        expect(expected).to(beFalsy())
+            }
+            
+            context("when value is false") {
+                it("should be false with Bool Type") {
+                    let value = TypeValueTransformer(type: "Bool", value: "false")?.value
+                    guard let expected = value as? Bool else {
+                        fail("It should return the type as Bool")
+                        return
                     }
+                    
+                    expect(expected).to(beFalsy())
                 }
-                
-                context("when value is no") {
-                    it("should be false with \(type) Type") {
-                        guard let expected = TypeValueTransformer(type: type, value: "no")?.value as? Bool else {
-                            fail("It should return the type as Bool")
-                            return
-                        }
-                        
-                        expect(expected).to(beFalsy())
+            }
+            
+            context("when value is no") {
+                it("should be false with Bool Type") {
+                    let value = TypeValueTransformer(type: "Bool", value: "no")?.value
+                    guard let expected = value as? Bool else {
+                        fail("It should return the type as Bool")
+                        return
                     }
+                    
+                    expect(expected).to(beFalsy())
                 }
-                
-                context("when value is 0") {
-                    it("should be false with \(type) Type") {
-                        guard let expected = TypeValueTransformer(type: type, value: "0")?.value as? Bool else {
-                            fail("It should return the type as Bool")
-                            return
-                        }
-                        
-                        expect(expected).to(beFalsy())
+            }
+            
+            context("when value is 0") {
+                it("should be false with Bool Type") {
+                    let value = TypeValueTransformer(type: "Bool", value: "0")?.value
+                    guard let expected = value as? Bool else {
+                        fail("It should return the type as Bool")
+                        return
                     }
+                    
+                    expect(expected).to(beFalsy())
                 }
-                
-                context("when value is unknown") {
-                    it("should be false with \(type) Type") {
-                        expect(TypeValueTransformer(type: type, value: "any")?.value).to(beNil())
-                    }
+            }
+            
+            context("when value is unknown") {
+                it("should be false with Bool Type") {
+                    expect(TypeValueTransformer(type: "Bool", value: "any")?.value).to(beNil())
                 }
-                
             }
             
         }

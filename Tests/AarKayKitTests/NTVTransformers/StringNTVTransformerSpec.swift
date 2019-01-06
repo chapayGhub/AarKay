@@ -16,15 +16,14 @@ class StringNTVTransformerSpec: QuickSpec {
         
         describe("StringNTVTransformer") {
             
-            ["String", "String?", "String!"].forEach { type in
-                it("works with \(type) Type") {
-                    guard let expected = TypeValueTransformer(type: type, value: "Hello, World!")?.value as? String else {
-                        fail("It should return the type as \(type)")
-                        return
-                    }
-                    
-                    expect(expected).to(equal("Hello, World!"))
+            it("works with String Type") {
+                let value = TypeValueTransformer(type: "String", value: "Hello, World!")?.value
+                guard let expected = value as? String else {
+                    fail("It should return the type as String")
+                    return
                 }
+                
+                expect(expected).to(equal("Hello, World!"))
             }
             
         }

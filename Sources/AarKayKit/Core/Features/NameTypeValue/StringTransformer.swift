@@ -27,21 +27,11 @@ public class TypeValueTransformer {
     let value: Any?
     
     init?(type: String, value: String) {
-        let strippedType = type.isOptionalType() ? String(type.dropLast()) : type
-        if let transformer = TypeValueTransformer.transformers[strippedType] {
+        if let transformer = TypeValueTransformer.transformers[type] {
             self.value = transformer.transform(value: value)
         } else {
             return nil
         }
-    }
-    
-}
-
-extension String {
-    
-    func isOptionalType() -> Bool {
-        guard let lastChar = self.last else { return false }
-        return (lastChar == "?" || lastChar == "!") ? true : false
     }
     
 }

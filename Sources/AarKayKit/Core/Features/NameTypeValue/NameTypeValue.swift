@@ -26,13 +26,20 @@ public struct NameTypeValue {
     public func toDictionary() throws -> [String: Any] {
         var dictionary: [String: Any] = [:]
         for (name, type, value) in zip(names, types, values) {
-            if let value = TypeValueTransformer(type: type, value: value)?.value {
+            let strippedType = isOptional(type: type) ? String(type.dropLast()) : type
+            if let value = TypeValueTransformer(type: strippedType, value: value)?.value {
                 dictionary[name] = value
-            } else if !type.isOptionalType() {
+            } else if !isOptional(type: type) {
                 throw NameTypeValueError.invalidTransformation
             }
         }
         return dictionary
     }
+    
+    func isOptional(type: String) -> Bool {
+        guard let lastChar = type.last else { return false }
+        return (lastChar == "?" || lastChar == "!") ? true : false
+    }
+    
 
 }

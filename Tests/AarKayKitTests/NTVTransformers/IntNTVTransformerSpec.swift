@@ -16,20 +16,19 @@ class IntNTVTransformerSpec: QuickSpec {
         
         describe("IntNTVTransformer") {
             
-            ["Int", "Int?", "Int!"].forEach { type in
-                it("works with \(type) Type") {
-                    guard let expected = TypeValueTransformer(type: type, value: "10")?.value as? Int else {
-                        fail("It should return the type as \(type)")
-                        return
-                    }
-                    
-                    expect(expected).to(equal(10))
+            it("works with Int Type") {
+                let value = TypeValueTransformer(type: "Int", value: "10")?.value
+                guard let expected = value as? Int else {
+                    fail("It should return the type as Int")
+                    return
                 }
                 
-                context("when value is unknown") {
-                    it("should return nil") {
-                        expect(TypeValueTransformer(type: type, value: "any")?.value).to(beNil())
-                    }
+                expect(expected).to(equal(10))
+            }
+            
+            context("when value is unknown") {
+                it("should return nil") {
+                    expect(TypeValueTransformer(type: "Int", value: "any")?.value).to(beNil())
                 }
             }
             

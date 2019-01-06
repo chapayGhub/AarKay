@@ -36,15 +36,14 @@ class CustomNTVTransformerSpec: QuickSpec {
             
             TypeValueTransformer.register(transformer: Custom.self)
             
-            ["Custom", "Custom?", "Custom!"].forEach { type in
-                it("works with \(type) Type") {
-                    guard let expected = TypeValueTransformer(type: type, value: "custom")?.value as? Custom else {
-                        fail("It should return the type as \(type)")
-                        return
-                    }
-                    
-                    expect(expected).to(equal(Custom(value: "custom")))
+            it("works with Custom Type") {
+                let value = TypeValueTransformer(type: "Custom", value: "custom")?.value
+                guard let expected = value as? Custom else {
+                    fail("It should return the type as Custom")
+                    return
                 }
+                
+                expect(expected).to(equal(Custom(value: "custom")))
             }
             
         }

@@ -11,19 +11,12 @@ import Nimble
 @testable import AarKayKit
 
 class UnknownNTVTransformerSpec: QuickSpec {
-    
     override func spec() {
-        
         describe("UnknownNTVTransformer") {
-            
-            ["Unknown", "Unknown?", "Unknown!"].forEach { type in
-                it("should return nil") {
-                    expect(TypeValueTransformer(type: type, value: "Hello, World!")?.value).to(beNil())
-                }
+            it("should return nil") {
+                let value = TypeValueTransformer(type: "Unknown", value: "Hello, World!")?.value
+                expect(value).to(beNil())
             }
-            
         }
-        
     }
-    
 }

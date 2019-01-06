@@ -16,20 +16,19 @@ class DoubleNTVTransformerSpec: QuickSpec {
         
         describe("DoubleNTVTransformer") {
             
-            ["Double", "Double?", "Double!"].forEach { type in
-                it("works with \(type) Type") {
-                    guard let expected = TypeValueTransformer(type: type, value: "10")?.value as? Double else {
-                        fail("It should return the type as \(type)")
-                        return
-                    }
-                    
-                    expect(expected).to(equal(10.0))
+            it("works with Double Type") {
+                let value = TypeValueTransformer(type: "Double", value: "10")?.value
+                guard let expected = value as? Double else {
+                    fail("It should return the type as Double")
+                    return
                 }
                 
-                context("when value is unknown") {
-                    it("should return nil") {
-                        expect(TypeValueTransformer(type: type, value: "any")?.value).to(beNil())
-                    }
+                expect(expected).to(equal(10.0))
+            }
+            
+            context("when value is unknown") {
+                it("should return nil") {
+                    expect(TypeValueTransformer(type: "Double", value: "any")?.value).to(beNil())
                 }
             }
             

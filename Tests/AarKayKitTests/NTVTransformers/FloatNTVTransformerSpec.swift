@@ -16,20 +16,19 @@ class FloatNTVTransformerSpec: QuickSpec {
         
         describe("FloatNTVTransformer") {
             
-            ["Float", "Float?", "Float!"].forEach { type in
-                it("works with \(type) Type") {
-                    guard let expected = TypeValueTransformer(type: type, value: "10")?.value as? Float else {
-                        fail("It should return the type as \(type)")
-                        return
-                    }
-                    
-                    expect(expected).to(equal(10.0))
+            it("works with Float Type") {
+                let value = TypeValueTransformer(type: "Float", value: "10")?.value
+                guard let expected = value as? Float else {
+                    fail("It should return the type as Float")
+                    return
                 }
                 
-                context("when value is unknown") {
-                    it("should return nil") {
-                        expect(TypeValueTransformer(type: type, value: "any")?.value).to(beNil())
-                    }
+                expect(expected).to(equal(10.0))
+            }
+            
+            context("when value is unknown") {
+                it("should return nil") {
+                    expect(TypeValueTransformer(type: "Float", value: "any")?.value).to(beNil())
                 }
             }
             
