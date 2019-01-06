@@ -29,6 +29,7 @@ extension AarKayKit {
         plugin: String,
         globalContext: [String: Any]?,
         fileName: String,
+        directory: String,
         template: String,
         contents: String
     ) throws -> [Result<Renderedfile, AnyError>] {
@@ -36,6 +37,7 @@ extension AarKayKit {
         let datafile = Datafile(
             plugin: plugin,
             name: fileName,
+            directory: directory,
             template: template,
             contents: contents,
             globalContext: globalContext
@@ -90,8 +92,7 @@ extension AarKayKit {
         
         // 3.
         let generatedFiles = aarkayService.datafileService.generatedfiles(
-            plugin: datafile.plugin,
-            template: datafile.template,
+            datafile: datafile,
             fileName: fileName,
             contextArray: contextArray,
             templateClass: templateClass

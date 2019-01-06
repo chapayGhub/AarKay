@@ -11,7 +11,7 @@ public protocol Templatable: class {
     
     var generatedfile: Generatedfile { get set }
     
-    init?(generatedfile: Generatedfile) throws 
+    init?(datafile: Datafile, generatedfile: Generatedfile) throws 
     func generatedfiles() -> [Generatedfile]
     
     func rk_filename() -> String

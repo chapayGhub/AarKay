@@ -24,8 +24,7 @@ class DatafileProvider: DatafileService {
     }
     
     func generatedfiles(
-        plugin: String,
-        template: String,
+        datafile: Datafile,
         fileName: String?,
         contextArray: [[String: Any]],
         templateClass: Templatable.Type
@@ -33,30 +32,34 @@ class DatafileProvider: DatafileService {
         let files = contextArray.map { context in
             Result<Generatedfile, AnyError> {
                 guard let fileName: String = fileName ?? context.rk.fileName() else {
-                    throw AarKayError.missingFileName(plugin, template, context)
+                    throw AarKayError.missingFileName(datafile.plugin, datafile.template, context)
                 }
                 let generatedfile = Generatedfile(
-                    plugin: plugin,
+                    plugin: datafile.plugin,
                     name: fileName.rk.standardized,
                     directory: context.rk.dirName(),
                     contents: context,
                     override: context.rk.override() ?? true,
-                    template: template
+                    template: datafile.template
                 )
                 return generatedfile
             }
         }
-        return templateGeneratedfiles(generatedfiles: files, templateClass: templateClass)
+        return templateGeneratedfiles(datafile: datafile,
+                                      generatedfiles: files,
+                                      templateClass: templateClass)
     }
     
     func templateGeneratedfiles(
+        datafile: Datafile,
         generatedfiles: [Result<Generatedfile, AnyError>],
         templateClass: Templatable.Type
     ) -> [Result<Generatedfile, AnyError>] {
         return generatedfiles.reduce([Result<Generatedfile, AnyError>]()) { original, generatedfile in
             switch generatedfile {
             case .success(let value):
-                let results = templateGeneratedfiles(generatedfile: value,
+                let results = templateGeneratedfiles(datafile: datafile,
+                                                     generatedfile: value,
                                                      templateClass: templateClass)
                 return original + results
             case .failure(let failure):
@@ -66,11 +69,13 @@ class DatafileProvider: DatafileService {
     }
     
     func templateGeneratedfiles(
+        datafile: Datafile,
         generatedfile: Generatedfile,
         templateClass: Templatable.Type
     ) -> [Result<Generatedfile, AnyError>] {
         do {
-            if let templatable = try templateClass.init(generatedfile: generatedfile) {
+            if let templatable = try templateClass.init(datafile: datafile,
+                                                        generatedfile: generatedfile) {
                 return templatable.generatedfiles().map { .success($0) }
             } else {
                 let error = AarKayError.modelDecodingFailure(

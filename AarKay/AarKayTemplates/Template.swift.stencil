@@ -4,7 +4,7 @@
 //  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
 //  \____|__  (____  /__|    |____|__ (____  / ____|
 //          \/     \/                \/    \/\/
-//
+//  
 
 import Foundation
 import AarKayKit
@@ -18,13 +18,15 @@ import {{import}}
 
 public class {{name}}: {% if base %}{{base}}{% else %}NSObject, Templatable{% endif %} {
 
+    private let datafile: Datafile
     private var model: {{name}}Model
     {% if not base %}
     public var generatedfile: Generatedfile
     {% endif %}
 
-    public required init?(generatedfile: Generatedfile) throws {
+    public required init?(datafile: Datafile, generatedfile: Generatedfile) throws {
         guard let contents = generatedfile.contents else { return nil }
+        self.datafile = datafile
         self.model = try contents.decode(type: {{name}}Model.self)
         {% if base %}try super.init(generatedfile: generatedfile){% endif %}
         var generatedfile = generatedfile

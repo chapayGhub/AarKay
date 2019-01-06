@@ -16,8 +16,7 @@ protocol DatafileService {
     ) throws -> Templatable.Type
     
     func generatedfiles(
-        plugin: String,
-        template: String,
+        datafile: Datafile,
         fileName: String?,
         contextArray: [[String: Any]],
         templateClass: Templatable.Type

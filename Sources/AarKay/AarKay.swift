@@ -121,7 +121,7 @@ public class AarKay {
                         /// Skip `dot` prefix if present.
                         let name = components.count == 4 ? components[1] : components[0]
                         let template = components[components.count-2]
-                        
+                        let directory = sourceUrl.deletingLastPathComponent().relativeString
                         do {
                             /// Read the contents of the Datafile.
                             let contents = try String(contentsOf: sourceUrl)
@@ -130,6 +130,7 @@ public class AarKay {
                             let renderedfiles = try AarKayKit.bootstrap(plugin: plugin,
                                                                         globalContext: globalContext,
                                                                         fileName: name,
+                                                                        directory: directory,
                                                                         template: template,
                                                                         contents: contents)
                             

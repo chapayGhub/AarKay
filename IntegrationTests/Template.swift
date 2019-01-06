@@ -4,18 +4,20 @@
 //  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
 //  \____|__  (____  /__|    |____|__ (____  / ____|
 //          \/     \/                \/    \/\/
-//
+//  
 
 import Foundation
 import AarKayKit
 
 public class Template: NSObject, Templatable {
 
+    private let datafile: Datafile
     private var model: TemplateModel
     public var generatedfile: Generatedfile
 
-    public required init?(generatedfile: Generatedfile) throws {
+    public required init?(datafile: Datafile, generatedfile: Generatedfile) throws {
         guard let contents = generatedfile.contents else { return nil }
+        self.datafile = datafile
         self.model = try contents.decode(type: TemplateModel.self)
         var generatedfile = generatedfile
         generatedfile.contents = try Dictionary.encode(data: model)

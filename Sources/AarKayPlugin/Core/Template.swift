@@ -4,18 +4,20 @@
 //  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
 //  \____|__  (____  /__|    |____|__ (____  / ____|
 //          \/     \/                \/    \/\/
-//
+//  
 
 import Foundation
 import AarKayKit
 
 public class Template: NSObject, Templatable {
 
+    private let datafile: Datafile
     private var model: TemplateModel
     public var generatedfile: Generatedfile
 
-    public required init?(generatedfile: Generatedfile) throws {
+    public required init?(datafile: Datafile, generatedfile: Generatedfile) throws {
         guard let contents = generatedfile.contents else { return nil }
+        self.datafile = datafile
         self.model = try contents.decode(type: TemplateModel.self)
         var generatedfile = generatedfile
         generatedfile.contents = try Dictionary.encode(data: model)
@@ -139,20 +141,24 @@ extension Template {
     
     public func generatedfiles() -> [Generatedfile] {
         var all = [Generatedfile]()
-        templateFiles(generatedFile: rk_generatedfile(), model: model, all: &all)
+        var templatesDir = "AarKay/AarKayTemplates"
+        let directoryComponents = datafile.directory.components(separatedBy: "/")
+        directoryComponents.forEach { _ in templatesDir = "../" + templatesDir }
+        templateFiles(generatedFile: rk_generatedfile(),
+                      templatesDir: templatesDir,
+                      model: model,
+                      all: &all)
         modelFiles(generatedFile: rk_generatedfile(), model: model, all: &all)
         return all
     }
     
-    func templateFiles(generatedFile: Generatedfile, model: TemplateModel, all: inout [Generatedfile]) {
-
-        var templatesDir = "../../AarKay/AarKayTemplates"
-
+    func templateFiles(generatedFile: Generatedfile, templatesDir: String, model: TemplateModel, all: inout [Generatedfile]) {
+        var templatesDir = templatesDir
         if let dir = model.dir {
-            templatesDir = NSString(string: templatesDir).appendingPathComponent(dir)
+            templatesDir = templatesDir + "/" + dir
         }
         let templateFilename = model.name
-
+        
         model.templates?.forEach {
             let fileName = templateFilename + ($0.suffix ?? "")
             let templateString = $0.string.replacingOccurrences(
@@ -165,12 +171,13 @@ extension Template {
             gfile.ext = "\($0.ext).stencil"
             all.append(gfile)
         }
-
+        
         guard let subs = model.subs else { return }
-
+        
         subs.forEach {
             let sub = $0
             sub.dir = model.dir
+            templatesDir = "../" + templatesDir
             if sub.templates == nil && model.templates != nil {
                 sub.templates = model.templates!.map { t in
                     if let substring = t.subString {
@@ -182,7 +189,7 @@ extension Template {
                     }
                 }
             }
-            templateFiles(generatedFile: generatedFile, model: sub, all: &all)
+            templateFiles(generatedFile: generatedFile, templatesDir: templatesDir, model: sub, all: &all)
         }
         
     }
