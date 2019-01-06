@@ -8,7 +8,7 @@
 import Foundation
 import Quick
 import Nimble
-@testable import AarKayPlugin
+@testable import AarKayKit
 
 struct Custom {
     let value: String
@@ -20,7 +20,7 @@ extension Custom: Equatable {
     }
 }
 
-extension Custom: TypeValueTransformable {
+extension Custom: StringTransformable {
     
     static func transform(value: String) -> Custom? {
         return Custom(value: value)

@@ -8,7 +8,7 @@
 import Foundation
 import Quick
 import Nimble
-@testable import AarKayPlugin
+@testable import AarKayKit
 
 class FloatNTVTransformerSpec: QuickSpec {
     

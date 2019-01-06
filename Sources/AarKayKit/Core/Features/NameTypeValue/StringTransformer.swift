@@ -7,17 +7,20 @@
 
 import Foundation
 
-class TypeValueTransformer {
+public class TypeValueTransformer {
     
-    private(set) static var transformers: [String: TypeValueTransformable.Type] = [
+    private(set) static var transformers: [String: StringTransformable.Type] = [
         "String": String.self ,
         "Bool": Bool.self,
         "Int": Int.self,
+        "Int16": Int16.self,
+        "Int32": Int32.self,
+        "Int64": Int64.self,
         "Float": Float.self,
         "Double": Double.self
     ]
     
-    public static func register(transformer: TypeValueTransformable.Type) {
+    public static func register(transformer: StringTransformable.Type) {
         transformers[String(describing: transformer)] = transformer
     }
     

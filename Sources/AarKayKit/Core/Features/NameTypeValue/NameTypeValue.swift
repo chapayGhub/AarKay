@@ -7,23 +7,23 @@
 
 import Foundation
 
-enum NameTypeValueError: Error {
+public enum NameTypeValueError: Error {
     case invalidTransformation
 }
 
-struct NameTypeValue {
+public struct NameTypeValue {
     
-    let names: [String]
-    let types: [String]
-    let values: [String]
+    public let names: [String]
+    public let types: [String]
+    public let values: [String]
     
-    init(names: [String], types: [String], value: String) {
+    public init(names: [String], types: [String], value: String) {
         self.names = names
         self.types = types
         self.values = value.components(separatedBy: "|")
     }
     
-    func toDictionary() throws -> [String: Any] {
+    public func toDictionary() throws -> [String: Any] {
         var dictionary: [String: Any] = [:]
         for (name, type, value) in zip(names, types, values) {
             if let value = TypeValueTransformer(type: type, value: value)?.value {

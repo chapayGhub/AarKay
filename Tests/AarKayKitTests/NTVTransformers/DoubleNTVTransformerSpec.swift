@@ -1,5 +1,5 @@
 //
-//  IntNTVTransformerSpec.swift
+//  DoubleNTVTransformerSpec.swift
 //  AarKayPluginTests
 //
 //  Created by RahulKatariya on 21/08/18.
@@ -8,22 +8,22 @@
 import Foundation
 import Quick
 import Nimble
-@testable import AarKayPlugin
+@testable import AarKayKit
 
-class IntNTVTransformerSpec: QuickSpec {
+class DoubleNTVTransformerSpec: QuickSpec {
     
     override func spec() {
         
-        describe("IntNTVTransformer") {
+        describe("DoubleNTVTransformer") {
             
-            ["Int", "Int?", "Int!"].forEach { type in
+            ["Double", "Double?", "Double!"].forEach { type in
                 it("works with \(type) Type") {
-                    guard let expected = TypeValueTransformer(type: type, value: "10")?.value as? Int else {
+                    guard let expected = TypeValueTransformer(type: type, value: "10")?.value as? Double else {
                         fail("It should return the type as \(type)")
                         return
                     }
                     
-                    expect(expected).to(equal(10))
+                    expect(expected).to(equal(10.0))
                 }
                 
                 context("when value is unknown") {
