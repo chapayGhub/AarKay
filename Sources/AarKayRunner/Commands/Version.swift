@@ -8,6 +8,7 @@
 import Commandant
 import Foundation
 import Result
+import AarKayRunnerKit
 
 /// Type that encapsulates the configuration and evaluation of the `version` subcommand.
 public struct VersionCommand: CommandProtocol {

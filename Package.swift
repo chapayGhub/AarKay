@@ -9,6 +9,7 @@ let package = Package(
         .library(name: "AarKay", targets: ["AarKay"]),
         .library(name: "AarKayKit", targets: ["AarKayKit"]),
         .library(name: "AarKayPlugin", targets: ["AarKayPlugin"]),
+        .library(name: "AarKayRunnerKit", targets: ["AarKayRunnerKit"]),
         .executable(name: "AarKayCLI", targets: ["AarKayCLI"]),
         .executable(name: "AarKayRunner", targets: ["AarKayRunner"]),
     ],
@@ -60,7 +61,11 @@ let package = Package(
         ),
         .target(
             name: "AarKayRunner",
-            dependencies: ["Commandant", "ReactiveTask", "Curry"]
+            dependencies: ["AarKayRunnerKit", "Commandant", "ReactiveTask", "Curry"]
+        ),
+        .target(
+            name: "AarKayRunnerKit",
+            dependencies: []
         ),
         .testTarget(
             name: "AarKayTests",
@@ -73,6 +78,10 @@ let package = Package(
         .testTarget(
             name: "AarKayKitTests",
             dependencies: ["AarKayKit", "Quick", "Nimble"]
+        ),
+        .testTarget(
+            name: "AarKayRunnerKitTests",
+            dependencies: ["AarKayRunnerKit", "Quick", "Nimble"]
         ),
     ],
     swiftLanguageVersions: [.v4, .v4_2]

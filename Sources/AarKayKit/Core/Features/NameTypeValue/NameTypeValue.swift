@@ -40,6 +40,5 @@ public struct NameTypeValue {
         guard let lastChar = type.last else { return false }
         return (lastChar == "?" || lastChar == "!") ? true : false
     }
-    
 
 }

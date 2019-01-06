@@ -9,6 +9,7 @@ import Foundation
 import ReactiveSwift
 import ReactiveTask
 import Result
+import AarKayRunnerKit
 
 /// A type that encapsulates all task events in AarKay.
 class Tasks {

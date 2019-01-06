@@ -9,6 +9,7 @@ import Foundation
 import Commandant
 import Result
 import Curry
+import AarKayRunnerKit
 
 /// Type that encapsulates the configuration and evaluation of the `update` subcommand.
 struct UpdateCommand: CommandProtocol {

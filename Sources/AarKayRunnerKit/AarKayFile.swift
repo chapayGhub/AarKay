@@ -7,20 +7,20 @@
 
 import Foundation
 
-struct AarKayFile {
-    let dependecies: [PackageDependency]
+public struct AarKayFile {
+    public let dependencies: [PackageDependency]
     
-    init(url: URL) throws {
+    public init(url: URL) throws {
         if let lines = try? String(contentsOf: url).components(separatedBy: .newlines) {
             let lines = lines.filter { !$0.isEmpty }
-            dependecies = try lines.map { try PackageDependency(string: $0) }
+            dependencies = try lines.map { try PackageDependency(string: $0) }
         } else {
             throw AarKayError.parsingError
         }
     }
 }
 
-struct PackageDependency {
+public struct PackageDependency {
     enum VersionType {
         case exact(String)
         case upToMajor(String)
@@ -59,7 +59,7 @@ struct PackageDependency {
             }
         }
         
-        func description() -> String {
+        public func description() -> String {
             switch self {
             case .exact(let version): return ".exact(\"\(version)\")"
             case .upToMajor(let version): return ".upToNextMajor(from: \"\(version)\")"
@@ -70,10 +70,10 @@ struct PackageDependency {
         }
     }
 
-    let url: URL
+    public let url: URL
     let version: VersionType
     
-    init(string: String) throws {
+    public init(string: String) throws {
         let comps = string.components(separatedBy: ",")
         guard comps.count == 2,
             let url = URL(string: comps[0].trimmingCharacters(in: .whitespaces)) else {
@@ -83,13 +83,13 @@ struct PackageDependency {
         try self.version = VersionType(string: comps[1].trimmingCharacters(in: .whitespacesAndNewlines))
     }
     
-    func packageDescription() -> String {
+    public func packageDescription() -> String {
         var path = self.url.absoluteString
         if path.hasPrefix("./") { path = "./." + path }
         return ".package(url: \"\(path)\", \(version.description())),"
     }
     
-    func targetDescription() -> String {
+    public func targetDescription() -> String {
         var url = self.url
         if url.path.hasSuffix(".git") { url = url.deletingPathExtension() }
         return "\"\(url.lastPathComponent)\","

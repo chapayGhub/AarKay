@@ -16,6 +16,7 @@ import Foundation
 import ReactiveTask
 import ReactiveSwift
 import Result
+import AarKayRunnerKit
 
 /// A queue to print all logs on console asynchrously.
 private let outputQueue = { () -> DispatchQueue in

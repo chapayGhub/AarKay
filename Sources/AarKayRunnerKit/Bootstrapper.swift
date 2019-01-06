@@ -8,7 +8,7 @@
 import Foundation
 
 /// Type that encapsulates creation of all files required by `AarKayRunner`.
-class Bootstrapper {
+public class Bootstrapper {
 
     /// Creates all files required to run `AarKay`.
     ///
@@ -16,7 +16,7 @@ class Bootstrapper {
     ///   - global: Setting global to true will bootstrap the `AarKay` project inside home directory otherwise will setup in the local directory.
     ///   - force: Setting force to true will delete all the files before creating them.
     /// - Throws: File manager errors
-    static func bootstrap(global: Bool = false, force: Bool = false) throws {
+    public static func bootstrap(global: Bool = false, force: Bool = false) throws {
         if force {
             let buildUrl = AarKayPaths.buildPath(global: global)
             if FileManager.default.fileExists(atPath: buildUrl.path) {
@@ -72,9 +72,9 @@ class Bootstrapper {
     /// - Parameters:
     ///   - global: Setting global to true will bootstrap the `AarKay` project inside home directory otherwise will setup in the local directory.
     /// - Throws: File manager errors
-    static func updatePackageSwift(global: Bool) throws {
+    public static func updatePackageSwift(global: Bool) throws {
         let aarkayFileUrl = AarKayPaths.aarkayFile(global: global)
-        let deps: [PackageDependency] = try AarKayFile(url: aarkayFileUrl).dependecies
+        let deps: [PackageDependency] = try AarKayFile(url: aarkayFileUrl).dependencies
         let contents = RunnerFiles.packageSwift(deps: deps)
         let url = AarKayPaths.packageSwift(global: global)
         try write(string: contents, url: url, force: true)
