@@ -28,7 +28,7 @@ public class {{name}}: {% if base %}{{base}}{% else %}NSObject, Templatable{% en
         guard let contents = generatedfile.contents else { return nil }
         self.datafile = datafile
         self.model = try contents.decode(type: {{name}}Model.self)
-        {% if base %}try super.init(generatedfile: generatedfile){% endif %}
+        {% if base %}try super.init(datafile: datafile, generatedfile: generatedfile){% endif %}
         var generatedfile = generatedfile
         generatedfile.contents = try Dictionary.encode(data: model)
         self.generatedfile = generatedfile
