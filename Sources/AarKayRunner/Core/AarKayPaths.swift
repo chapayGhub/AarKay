@@ -1,5 +1,5 @@
 //
-//  FileManagerExtensions.swift
+//  AarKayPaths.swift
 //  AarKay
 //
 //  Created by Rahul Katariya on 03/03/18.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension URL {
+class AarKayPaths {
     
     /// Creates the url representing the global directory for `AarKay`
     ///

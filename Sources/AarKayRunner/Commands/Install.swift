@@ -25,7 +25,7 @@ struct InstallCommand: CommandProtocol {
     var function: String = "Install all the plugins from `AarKayFile`."
     
     func run(_ options: Options) -> Result<(), AarKayError> {
-        let runnerUrl = URL.runnerPath(global: options.global)
+        let runnerUrl = AarKayPaths.runnerPath(global: options.global)
         
         guard FileManager.default.fileExists(atPath: runnerUrl.path) else {
             return .failure(.missingProject(runnerUrl.deletingLastPathComponent().path))

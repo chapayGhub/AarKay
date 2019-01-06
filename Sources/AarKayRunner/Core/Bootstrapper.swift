@@ -18,11 +18,11 @@ class Bootstrapper {
     /// - Throws: File manager errors
     static func bootstrap(global: Bool = false, force: Bool = false) throws {
         if force {
-            let buildUrl = URL.buildPath(global: global)
+            let buildUrl = AarKayPaths.buildPath(global: global)
             if FileManager.default.fileExists(atPath: buildUrl.path) {
                 try FileManager.default.removeItem(at: buildUrl)
             }
-            let packageResolvedUrl = URL.packageResolved(global: global)
+            let packageResolvedUrl = AarKayPaths.packageResolved(global: global)
             if FileManager.default.fileExists(atPath: packageResolvedUrl.path) {
                 try FileManager.default.removeItem(at: packageResolvedUrl)
             }
@@ -40,7 +40,7 @@ class Bootstrapper {
     ///   - force: Setting force to true will delete all the files before creating them.
     /// - Throws: File manager errors
     private static func createCLISwift(global: Bool, force: Bool = false) throws {
-        let url = URL.mainSwift(global: global)
+        let url = AarKayPaths.mainSwift(global: global)
         try write(string: RunnerFiles.cliSwift, url: url, force: force)
     }
 
@@ -51,7 +51,7 @@ class Bootstrapper {
     ///   - force: Setting force to true will delete all the files before creating them.
     /// - Throws: File manager errors
     private static func createSwiftVersion(global: Bool, force: Bool = false) throws {
-        let url = URL.swiftVersion(global: global)
+        let url = AarKayPaths.swiftVersion(global: global)
         try write(string: RunnerFiles.swiftVersion, url: url, force: force)
     }
 
@@ -61,7 +61,7 @@ class Bootstrapper {
     ///   - global: Setting global to true will bootstrap the `AarKay` project inside home directory otherwise will setup in the local directory.
     /// - Throws: File manager errors
     private static func createAarKayFile(global: Bool) throws {
-        let url = URL.aarkayFile(global: global)
+        let url = AarKayPaths.aarkayFile(global: global)
         if !FileManager.default.fileExists(atPath: url.path) {
             try write(string: RunnerFiles.aarkayFile, url: url, force: false)
         }
@@ -73,10 +73,10 @@ class Bootstrapper {
     ///   - global: Setting global to true will bootstrap the `AarKay` project inside home directory otherwise will setup in the local directory.
     /// - Throws: File manager errors
     static func updatePackageSwift(global: Bool) throws {
-        let aarkayFileUrl = URL.aarkayFile(global: global)
+        let aarkayFileUrl = AarKayPaths.aarkayFile(global: global)
         let deps: [PackageDependency] = try AarKayFile(url: aarkayFileUrl).dependecies
         let contents = RunnerFiles.packageSwift(deps: deps)
-        let url = URL.packageSwift(global: global)
+        let url = AarKayPaths.packageSwift(global: global)
         try write(string: contents, url: url, force: true)
     }
     

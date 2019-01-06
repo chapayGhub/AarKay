@@ -59,6 +59,23 @@ extension String {
     }
 }
 
+extension Task {
+    
+    /// Launches the task and converts the task data to string.
+    ///
+    /// - Returns: A result containing either success or `AarKayError`
+    internal func run() -> Result<(), AarKayError> {
+        let result = launch()
+            .flatMapTaskEvents(.concat) { data in
+                return SignalProducer(
+                    value: String(data: data, encoding: .utf8)
+                )
+        }
+        return result.waitOnCommand()
+    }
+    
+}
+
 extension SignalProducer where Value == TaskEvent<String?>, Error == TaskError {
     /// Waits on a SignalProducer that implements the behavior of a CommandProtocol.
     internal func waitOnCommand() -> Result<(), AarKayError> {
