@@ -28,7 +28,7 @@ class RunnerFiles {
     
     /// An empty aarkay string that will contain user installed plugins.
     static let aarkayFile = """
-    https://github.com/RahulKatariya/AarKay.git, ~> \(version)
+    https://github.com/RahulKatariya/AarKay.git, ~> \(AarKayVersion)
     """
 
     /// The package description string for `AarKayRunner`

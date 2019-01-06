@@ -16,7 +16,7 @@ public struct VersionCommand: CommandProtocol {
     public let function = "Display the current version of aarkay"
     
     public func run(_ options: NoOptions<AarKayError>) -> Result<(), AarKayError> {
-        println(version)
+        println(AarKayVersion)
         return .success(())
     }
 }

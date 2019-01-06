@@ -7,4 +7,4 @@
 
 import Foundation
 
-public let version = "0.1.0"
+public let AarKayVersion = "0.1.0"
