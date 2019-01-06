@@ -32,6 +32,20 @@ public class ArgModel: Codable {
         /// </aarkay>
     }
 
+    public var isArray: Bool {
+        /// <aarkay isArray>
+        if swiftType.hasPrefix("[[") && swiftType.hasSuffix("]]") {
+            return true
+        } else if swiftType.hasPrefix("[") &&
+            swiftType.hasSuffix("]") &&
+            !swiftType.contains(":") {
+            return true
+        } else {
+            return false
+        }
+        /// </aarkay>
+    }
+
     public var swiftType: String {
         /// <aarkay swiftType>
         return isOptionalOrWrapped ? String(type.dropLast()) : type
@@ -45,6 +59,7 @@ public class ArgModel: Codable {
         case isOptional
         case isWrapped
         case isOptionalOrWrapped
+        case isArray
         case swiftType
     }
 
@@ -76,6 +91,7 @@ public class ArgModel: Codable {
         try container.encode(isOptional, forKey: .isOptional)
         try container.encode(isWrapped, forKey: .isWrapped)
         try container.encode(isOptionalOrWrapped, forKey: .isOptionalOrWrapped)
+        try container.encode(isArray, forKey: .isArray)
         try container.encode(swiftType, forKey: .swiftType)
     }
 

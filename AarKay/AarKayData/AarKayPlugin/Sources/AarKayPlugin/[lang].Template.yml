@@ -10,6 +10,7 @@
     - isOptional|Bool
     - isWrapped|Bool
     - isOptionalOrWrapped|Bool
+    - isArray|Bool
     - swiftType|String
 - name: TemplateString
   isTemplate: false
