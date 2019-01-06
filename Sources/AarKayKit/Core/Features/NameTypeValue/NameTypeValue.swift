@@ -12,10 +12,9 @@ public enum NameTypeValueError: Error {
 }
 
 public struct NameTypeValue {
-    
-    public let names: [String]
-    public let types: [String]
-    public let values: [String]
+    let names: [String]
+    let types: [String]
+    let values: [String]
     
     public init(names: [String], types: [String], value: String) {
         self.names = names
@@ -40,5 +39,4 @@ public struct NameTypeValue {
         guard let lastChar = type.last else { return false }
         return (lastChar == "?" || lastChar == "!") ? true : false
     }
-
 }
