@@ -1,0 +1,21 @@
+name: Template
+isPlugin: false
+properties:
+  - isTemplate|Bool!|true
+  - isPlugin|Bool!|true
+  - name|String
+  - module|String!|self.name
+  - base|String?
+  - dir|String?
+  - templates|[TemplateStringModel]?
+  - subs|[TemplateModel]?
+  - inputSerializer|String?
+  - customDecoder|Bool!|false
+  - properties|[ArgModel]!|[]
+  - baseProperties|[ArgModel]!|[]
+  - computedProperties|[ArgModel]?
+computedProperties:
+  - allProperties|[ArgModel]?
+  - requiredProperties|[ArgModel]?
+  - requiredBaseProperties|[ArgModel]?
+  - requiredAllProperties|[ArgModel]?

@@ -1,0 +1,21 @@
+- name: Arg
+  customDecoder: true
+  isTemplate: false
+  isPlugin: false
+  properties:
+    - name|String
+    - type|String
+    - value|String?
+  computedProperties:
+    - isOptional|Bool
+    - isWrapped|Bool
+    - isOptionalOrWrapped|Bool
+    - swiftType|String
+- name: TemplateString
+  isTemplate: false
+  isPlugin: false
+  properties:
+    - ext|String
+    - suffix|String?
+    - string|String
+    - subString|String?
