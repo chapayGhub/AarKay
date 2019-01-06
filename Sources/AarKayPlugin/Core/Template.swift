@@ -153,12 +153,12 @@ extension Template {
     }
     
     func templateFiles(generatedFile: Generatedfile, templatesDir: String, model: TemplateModel, all: inout [Generatedfile]) {
+        let templateFilename = model.name
+        
         var templatesDir = templatesDir
         if let dir = model.dir {
             templatesDir = templatesDir + "/" + dir
         }
-        let templateFilename = model.name
-        
         model.templates?.forEach {
             let fileName = templateFilename + ($0.suffix ?? "")
             let templateString = $0.string.replacingOccurrences(
@@ -176,7 +176,7 @@ extension Template {
         
         subs.forEach {
             let sub = $0
-            sub.dir = model.dir
+            sub.dir = model.name
             templatesDir = "../" + templatesDir
             if sub.templates == nil && model.templates != nil {
                 sub.templates = model.templates!.map { t in
@@ -189,7 +189,10 @@ extension Template {
                     }
                 }
             }
-            templateFiles(generatedFile: generatedFile, templatesDir: templatesDir, model: sub, all: &all)
+            templateFiles(generatedFile: generatedFile,
+                          templatesDir: templatesDir,
+                          model: sub,
+                          all: &all)
         }
         
     }
@@ -203,9 +206,11 @@ extension Template {
         subs.forEach { sub in
             sub.base = (model.properties.isEmpty) ? model.base : model.name
             sub.baseProperties = model.baseProperties + model.properties
-            let subDirectory = (generatedFile.directory ?? "") + "/" + model.name
+            let subDir = generatedFile.directory != nil ?
+                generatedFile.directory! + "/" + model.name :
+                model.name
             var subFile = generatedFile
-            subFile.directory = subDirectory
+            subFile.directory = subDir
             subFile.contents = try! Dictionary.encode(data: sub)
             modelFiles(generatedFile: subFile, model: sub, all: &all)
         }
