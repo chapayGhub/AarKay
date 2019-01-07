@@ -54,3 +54,5 @@ enum VersionType {
         }
     }
 }
+
+extension VersionType: Equatable {}

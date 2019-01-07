@@ -10,12 +10,8 @@ import Foundation
 public struct AarKayFile {
     public let dependencies: [PackageDependency]
     
-    public init(url: URL) throws {
-        if let lines = try? String(contentsOf: url).components(separatedBy: .newlines) {
-            let lines = lines.filter { !$0.isEmpty }
-            dependencies = try lines.map { try PackageDependency(string: $0) }
-        } else {
-            throw AarKayError.parsingError
-        }
+    public init(contents: String) throws {
+        let lines = contents.components(separatedBy: .newlines).filter { !$0.isEmpty }
+        dependencies = try lines.map { try PackageDependency(string: $0) }
     }
 }

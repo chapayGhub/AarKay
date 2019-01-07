@@ -3,7 +3,6 @@ import Commandant
 import ReactiveTask
 import AarKayRunnerKit
 
-
 /// Command registry containing all commands supported by `AarKay`.
 let registry = CommandRegistry<AarKayError>()
 registry.register(InitCommand())
