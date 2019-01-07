@@ -8,7 +8,7 @@
 import Foundation
 import Quick
 import Nimble
-@testable import AarKayKit
+@testable import AarKayPlugin
 
 class NameTypeValueSpec: QuickSpec {
     
