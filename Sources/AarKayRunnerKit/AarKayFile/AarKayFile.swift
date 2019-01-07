@@ -8,10 +8,10 @@
 import Foundation
 
 public struct AarKayFile {
-    public let dependencies: [PackageDependency]
+    public let dependencies: [Dependency]
     
     public init(contents: String) throws {
         let lines = contents.components(separatedBy: .newlines).filter { !$0.isEmpty }
-        dependencies = try lines.map { try PackageDependency(string: $0) }
+        dependencies = try lines.map { try Dependency(string: $0) }
     }
 }

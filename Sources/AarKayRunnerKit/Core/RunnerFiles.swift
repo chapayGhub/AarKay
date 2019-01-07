@@ -32,7 +32,7 @@ class RunnerFiles {
     """
 
     /// The package description string for `AarKayRunner`
-    static func packageSwift(deps: [PackageDependency]) -> String {
+    static func packageSwift(deps: [Dependency]) -> String {
         let packages = deps.reduce("") { (result, item) -> String in
             return result + """
             \n        \(item.packageDescription())

@@ -75,7 +75,7 @@ public class Bootstrapper {
     public static func updatePackageSwift(global: Bool) throws {
         let aarkayFileUrl = AarKayPaths.aarkayFile(global: global)
         let aarkayFileContents = try String(contentsOf: aarkayFileUrl)
-        let deps: [PackageDependency] = try AarKayFile(contents: aarkayFileContents).dependencies
+        let deps: [Dependency] = try AarKayFile(contents: aarkayFileContents).dependencies
         let contents = RunnerFiles.packageSwift(deps: deps)
         let url = AarKayPaths.packageSwift(global: global)
         try write(string: contents, url: url, force: true)

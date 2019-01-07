@@ -1,5 +1,5 @@
 //
-//  PackageDependency.swift
+//  Dependency.swift
 //  AarKayRunnerKit
 //
 //  Created by RahulKatariya on 06/01/19.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-public struct PackageDependency {
-    public let url: URL
+public struct Dependency {
+    let url: URL
     let version: VersionType
     
     public init(string: String) throws {
