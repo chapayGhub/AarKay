@@ -39,16 +39,9 @@ extension AarKayKit {
             globalContext: globalContext
         )
 
-        let datafileService: DatafileService = DatafileProvider()
-        let generatedfileService: GeneratedfileService = GeneratedfileProvider()
-        let aarkayService: AarKayService = AarKayProvider(
-            datafileService: datafileService,
-            generatedfileService: generatedfileService
-        )
-
         let aarkayKit = AarKayKit(
             datafile: datafile,
-            aarkayService: aarkayService
+            aarkayService: AarKayProvider()
         )
 
         return try aarkayKit.bootstrap()
@@ -61,7 +54,7 @@ extension AarKayKit {
         var templateClass: Templatable.Type!
         var context: Any?
         do {
-            templateClass = try self.aarkayService.datafileService.templateClass(
+            templateClass = try self.aarkayService.templateClass(
                 plugin: self.datafile.plugin,
                 template: self.datafile.template
             )
@@ -84,7 +77,7 @@ extension AarKayKit {
         }
 
         // 3.
-        let generatedFiles = aarkayService.datafileService.generatedfiles(
+        let generatedFiles = aarkayService.generatedfiles(
             datafile: datafile,
             fileName: fileName,
             contextArray: contextArray,
@@ -92,7 +85,7 @@ extension AarKayKit {
         )
 
         // 4.
-        return self.aarkayService.generatedfileService.renderedFiles(
+        return self.aarkayService.renderedFiles(
             url: templateClass.resource().rk.templatesDirectory(),
             generatedfiles: generatedFiles,
             context: self.datafile.globalContext

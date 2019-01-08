@@ -8,11 +8,6 @@
 import Foundation
 
 /// Describes a provider of aarkay extensions.
-///
-/// - note: `AarKayExtensionsProvider` does not indicate whether a type is
-///         reactive. It is intended for extensions to types that are not owned
-///         by the module in order to avoid name collisions and return type
-///         ambiguities.
 protocol AarKayExtensionsProvider {}
 
 extension AarKayExtensionsProvider {

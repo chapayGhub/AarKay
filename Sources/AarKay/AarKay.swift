@@ -84,72 +84,12 @@ public class AarKay {
 
                 do {
                     try dirTreeMirror.bootstrap { (sourceUrl: URL, destinationUrl: URL) in
-                        /// Ignore the system dotfiles in AarKayFiles directory. Users can create custom dotfiles using string "dot" like 'dot.filename.yml' which will be generated as '.filename.ext'.
-                        guard !sourceUrl.lastPathComponent.hasPrefix(".") else { return }
-
-                        AarKayLogger.logDatafile(at: sourceUrl)
-
-                        /// All Datafiles will have atleast two components seperated by ".".
-                        /// The latter component will be the extension of type of serialization file like yml, json, exel and so on and the first component as the name of the template and the name of filename.
-                        ///
-                        /// For instance: -
-                        ///     1. Template.yml
-                        ///     2. gitignore.yml
-                        ///     3. CoreData.json
-                        ///
-                        /// The template name and the file name in this cases is same and always the first component - Template, gitignore, CoreData.
-                        ///
-                        /// However Datafiles can also have 3 components seperated by ".".
-                        ///
-                        /// For instance: -
-                        ///     1. Name.Template.yml
-                        ///     2. swift.gitignore.yml
-                        ///     3. DataModel.CoreData.json
-                        ///
-                        /// The template name in this case is the second component - Template, gitignore, CoreData and the filename will be the first component - Name, swift, DataModel.
-                        ///
-                        /// Return log error if the components are more than 3 or less than 2. A special case where components will be 4 is only when the first component is "dot" as the first "dot" is treated as actual ".".
-                        let components = sourceUrl.lastPathComponent.components(separatedBy: ".")
-                        if components.count < 2 ||
-                            components.count > 4 ||
-                            (components.count == 4 && components[0] != "dot") {
-                            AarKayLogger.logErrorMessage("Invalid Datafile name at \(sourceUrl.lastPathComponent)")
-                            return
-                        }
-
-                        /// Skip `dot` prefix if present.
-                        let name = components.count == 4 ? components[1] : components[0]
-                        let template = components[components.count - 2]
-                        let directory = sourceUrl.deletingLastPathComponent().relativeString
-                        do {
-                            /// Read the contents of the Datafile.
-                            let contents = try String(contentsOf: sourceUrl)
-
-                            /// Returns all generated files result.
-                            let renderedfiles = try AarKayKit.bootstrap(
-                                plugin: plugin,
-                                globalContext: globalContext,
-                                fileName: name,
-                                directory: directory,
-                                template: template,
-                                contents: contents
-                            )
-
-                            try renderedfiles.forEach { renderedfile in
-                                switch renderedfile {
-                                case .success(let value):
-                                    /// Create the file at the mirrored destination url with the generated contents.
-                                    try createFile(
-                                        renderedfile: value,
-                                        at: destinationUrl.deletingLastPathComponent()
-                                    )
-                                case .failure(let error):
-                                    AarKayLogger.logError(error)
-                                }
-                            }
-                        } catch {
-                            AarKayLogger.logError(error)
-                        }
+                        self.bootstrap(
+                            plugin: plugin,
+                            globalContext: globalContext,
+                            sourceUrl: sourceUrl,
+                            destinationUrl: destinationUrl
+                        )
                     }
                 } catch {
                     AarKayLogger.logError(error)
@@ -160,13 +100,99 @@ public class AarKay {
         }
     }
 
+    private func bootstrap(
+        plugin: String,
+        globalContext: [String: Any]?,
+        sourceUrl: URL,
+        destinationUrl: URL
+    ) {
+        /// Ignore the system dotfiles in AarKayFiles directory. Users can create custom dotfiles using string "dot" like 'dot.filename.yml' which will be generated as '.filename.ext'.
+        guard !sourceUrl.lastPathComponent.hasPrefix(".") else { return }
+
+        AarKayLogger.logDatafile(at: sourceUrl)
+
+        /// All Datafiles will have atleast two components seperated by ".".
+        /// The latter component will be the extension of type of serialization file like yml, json, exel and so on and the first component as the name of the template and the name of filename.
+        ///
+        /// For instance: -
+        ///     1. Template.yml
+        ///     2. gitignore.yml
+        ///     3. CoreData.json
+        ///
+        /// The template name and the file name in this cases is same and always the first component - Template, gitignore, CoreData.
+        ///
+        /// However Datafiles can also have 3 components seperated by ".".
+        ///
+        /// For instance: -
+        ///     1. Name.Template.yml
+        ///     2. swift.gitignore.yml
+        ///     3. DataModel.CoreData.json
+        ///
+        /// The template name in this case is the second component - Template, gitignore, CoreData and the filename will be the first component - Name, swift, DataModel.
+        ///
+        /// Return log error if the components are more than 3 or less than 2. A special case where components will be 4 is only when the first component is "dot" as the first "dot" is treated as actual ".".
+        let components = sourceUrl.lastPathComponent.components(separatedBy: ".")
+        if components.count < 2 ||
+            components.count > 4 ||
+            (components.count == 4 && components[0] != "dot") {
+            AarKayLogger.logErrorMessage("Invalid Datafile name at \(sourceUrl.lastPathComponent)")
+            return
+        }
+
+        /// Skip `dot` prefix if present.
+        let name = components.count == 4 ? components[1] : components[0]
+        let template = components[components.count - 2]
+        let directory = sourceUrl.deletingLastPathComponent().relativeString
+        do {
+            /// Read the contents of the Datafile.
+            let contents = try String(contentsOf: sourceUrl)
+
+            /// Returns all generated files result.
+            let renderedfiles = try AarKayKit.bootstrap(
+                plugin: plugin,
+                globalContext: globalContext,
+                fileName: name,
+                directory: directory,
+                template: template,
+                contents: contents
+            )
+
+            try renderedfiles.forEach { renderedfile in
+                switch renderedfile {
+                case .success(let value):
+                    /// Create the file at the mirrored destination url with the generated contents.
+                    try createFile(
+                        renderedfile: value,
+                        at: destinationUrl.deletingLastPathComponent()
+                    )
+                case .failure(let error):
+                    AarKayLogger.logError(error)
+                }
+            }
+        } catch {
+            AarKayLogger.logError(error)
+        }
+    }
+
+    /// Reads the global context url from the path "{PROJECT_ROOT}/AarKay/.aarkay" and serializes it into a dictionary using Yaml serialzer.
+    ///
+    /// - Returns: The dictionary from contents.
+    /// - Throws: An error if the url contents cannot be loaded.
+    private func aarkayGlobalContext() throws -> [String: Any]? {
+        let aarkayGlobalContextUrl = url.appendingPathComponent("AarKay/.aarkay")
+        guard let contents = try? String(contentsOf: aarkayGlobalContextUrl) else {
+            return nil
+        }
+        return try YamlInputSerializer.load(contents) as? [String: Any]
+    }
+
     /// Reads the current file at url and merges the contents of `RenderedFile` to it.
     ///
     /// - Parameters:
     ///   - renderedfile: The rendered file.
     ///   - url: The destination url.
     /// - Throws: FileManager operation errors.
-    func createFile(renderedfile: Renderedfile, at url: URL) throws {
+    private func createFile(renderedfile: Renderedfile, at url: URL) throws {
         var url = url
         if let directory = renderedfile.directory {
             url = url
@@ -199,17 +225,5 @@ public class AarKay {
             try string.write(toFile: url.path, atomically: true, encoding: .utf8)
             AarKayLogger.logFileAdded(at: url)
         }
-    }
-
-    /// Reads the global context url from the path "{PROJECT_ROOT}/AarKay/.aarkay" and serializes it into a dictionary using Yaml serialzer.
-    ///
-    /// - Returns: The dictionary from contents.
-    /// - Throws: An error if the url contents cannot be loaded.
-    func aarkayGlobalContext() throws -> [String: Any]? {
-        let aarkayGlobalContextUrl = url.appendingPathComponent("AarKay/.aarkay")
-        guard let contents = try? String(contentsOf: aarkayGlobalContextUrl) else {
-            return nil
-        }
-        return try YamlInputSerializer.load(contents) as? [String: Any]
     }
 }

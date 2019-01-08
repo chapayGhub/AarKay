@@ -1,6 +1,6 @@
 //
-//  DatafileService.swift
-//  AarKay
+//  AarKayService.swift
+//  AarKayKit
 //
 //  Created by RahulKatariya on 20/10/18.
 //
@@ -8,7 +8,7 @@
 import Foundation
 import Result
 
-protocol DatafileService {
+protocol AarKayService {
     func templateClass(
         plugin: String,
         template: String
@@ -20,4 +20,10 @@ protocol DatafileService {
         contextArray: [[String: Any]],
         templateClass: Templatable.Type
     ) -> [Result<Generatedfile, AnyError>]
+
+    func renderedFiles(
+        url: URL,
+        generatedfiles: [Result<Generatedfile, AnyError>],
+        context: [String: Any]?
+    ) -> [Result<Renderedfile, AnyError>]
 }

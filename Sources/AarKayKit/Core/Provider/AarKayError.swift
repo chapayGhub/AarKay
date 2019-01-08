@@ -1,21 +1,11 @@
 //
-//  AarKayService.swift
+//  AarKayError.swift
 //  AarKayKit
 //
-//  Created by RahulKatariya on 20/10/18.
+//  Created by RahulKatariya on 08/01/19.
 //
 
 import Foundation
-
-protocol AarKayService {
-    var datafileService: DatafileService { get }
-    var generatedfileService: GeneratedfileService { get }
-
-    init(
-        datafileService: DatafileService,
-        generatedfileService: GeneratedfileService
-    )
-}
 
 enum AarKayError: Error {
     case missingPlugin(String)
