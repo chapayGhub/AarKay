@@ -61,11 +61,11 @@ let package = Package(
         ),
         .target(
             name: "AarKayRunner",
-            dependencies: ["AarKayRunnerKit", "Commandant", "ReactiveTask", "Curry"]
+            dependencies: ["AarKayRunnerKit"]
         ),
         .target(
             name: "AarKayRunnerKit",
-            dependencies: []
+            dependencies: ["Commandant", "ReactiveTask", "Curry"]
         ),
         .testTarget(
             name: "AarKayTests",
