@@ -23,9 +23,10 @@ public enum AarKayError: Error {
 }
 
 // MARK: - CustomStringConvertible
+
 extension AarKayError: CustomStringConvertible {
     public var description: String {
-        switch  self {
+        switch self {
         case .bootstap(let error):
             return "[ERROR] \(error.localizedDescription). Please report the issue at https://github.com/AarKay/AarKay."
         case .projectAlreadyExists(let path):

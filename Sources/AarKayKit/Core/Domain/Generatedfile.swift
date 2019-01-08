@@ -16,7 +16,7 @@ public struct Generatedfile {
     public var template: String
     public var templateString: String?
     public var ext: String?
-    
+
     public init(
         plugin: String,
         name: String,

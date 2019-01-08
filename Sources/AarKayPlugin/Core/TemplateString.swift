@@ -4,10 +4,10 @@
 //  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
 //  \____|__  (____  /__|    |____|__ (____  / ____|
 //          \/     \/                \/    \/\/
-//  
+//
 
-import Foundation
 import AarKayKit
+import Foundation
 
 public class TemplateStringModel: Codable {
     public var ext: String
@@ -42,5 +42,4 @@ public class TemplateStringModel: Codable {
         try container.encode(string, forKey: .string)
         try container.encodeIfPresent(subString, forKey: .subString)
     }
-
 }

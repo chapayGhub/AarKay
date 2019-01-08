@@ -4,13 +4,12 @@
 //  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
 //  \____|__  (____  /__|    |____|__ (____  / ____|
 //          \/     \/                \/    \/\/
-//  
+//
 
-import Foundation
 import AarKayKit
+import Foundation
 
 public class Template: NSObject, Templatable {
-
     private let datafile: Datafile
     private var model: TemplateModel
     public var generatedfile: Generatedfile
@@ -27,7 +26,6 @@ public class Template: NSObject, Templatable {
     public static func resource() -> String {
         return #file
     }
-
 }
 
 public class TemplateModel: Codable {
@@ -74,5 +72,4 @@ public class TemplateModel: Codable {
         try container.encodeIfPresent(allProperties, forKey: .allProperties)
         try container.encodeIfPresent(requiredProperties, forKey: .requiredProperties)
     }
-
 }

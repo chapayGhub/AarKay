@@ -4,13 +4,12 @@
 //  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
 //  \____|__  (____  /__|    |____|__ (____  / ____|
 //          \/     \/                \/    \/\/
-//  
+//
 
-import Foundation
 import AarKayKit
+import Foundation
 
 public class Template: NSObject, Templatable {
-
     private let datafile: Datafile
     private var model: TemplateModel
     public var generatedfile: Generatedfile
@@ -27,7 +26,6 @@ public class Template: NSObject, Templatable {
     public static func resource() -> String {
         return #file
     }
-
 }
 
 public class TemplateModel: Codable {
@@ -56,19 +54,19 @@ public class TemplateModel: Codable {
 
     public var requiredProperties: [ArgModel]? {
         /// <aarkay requiredProperties>
-        return properties.filter { !$0.isOptionalOrWrapped }
+        return self.properties.filter { !$0.isOptionalOrWrapped }
         /// </aarkay>
     }
 
     public var requiredBaseProperties: [ArgModel]? {
         /// <aarkay requiredBaseProperties>
-        return baseProperties.filter { !$0.isOptionalOrWrapped }
+        return self.baseProperties.filter { !$0.isOptionalOrWrapped }
         /// </aarkay>
     }
 
     public var requiredAllProperties: [ArgModel]? {
         /// <aarkay requiredAllProperties>
-        return (baseProperties + properties).filter { !$0.isOptionalOrWrapped }
+        return (self.baseProperties + self.properties).filter { !$0.isOptionalOrWrapped }
         /// </aarkay>
     }
 
@@ -98,18 +96,18 @@ public class TemplateModel: Codable {
 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.isTemplate = try container.decodeIfPresent(Bool.self, forKey: .isTemplate) ?? true 
-        self.isPlugin = try container.decodeIfPresent(Bool.self, forKey: .isPlugin) ?? true 
+        self.isTemplate = try container.decodeIfPresent(Bool.self, forKey: .isTemplate) ?? true
+        self.isPlugin = try container.decodeIfPresent(Bool.self, forKey: .isPlugin) ?? true
         self.name = try container.decode(String.self, forKey: .name)
-        self.module = try container.decodeIfPresent(String.self, forKey: .module) ?? self.name 
+        self.module = try container.decodeIfPresent(String.self, forKey: .module) ?? self.name
         self.base = try container.decodeIfPresent(String.self, forKey: .base)
         self.dir = try container.decodeIfPresent(String.self, forKey: .dir)
         self.templates = try container.decodeIfPresent([TemplateStringModel].self, forKey: .templates)
         self.subs = try container.decodeIfPresent([TemplateModel].self, forKey: .subs)
         self.inputSerializer = try container.decodeIfPresent(String.self, forKey: .inputSerializer)
-        self.customDecoder = try container.decodeIfPresent(Bool.self, forKey: .customDecoder) ?? false 
-        self.properties = try container.decodeIfPresent([ArgModel].self, forKey: .properties) ?? [] 
-        self.baseProperties = try container.decodeIfPresent([ArgModel].self, forKey: .baseProperties) ?? [] 
+        self.customDecoder = try container.decodeIfPresent(Bool.self, forKey: .customDecoder) ?? false
+        self.properties = try container.decodeIfPresent([ArgModel].self, forKey: .properties) ?? []
+        self.baseProperties = try container.decodeIfPresent([ArgModel].self, forKey: .baseProperties) ?? []
         self.computedProperties = try container.decodeIfPresent([ArgModel].self, forKey: .computedProperties)
     }
 
@@ -133,28 +131,29 @@ public class TemplateModel: Codable {
         try container.encodeIfPresent(requiredBaseProperties, forKey: .requiredBaseProperties)
         try container.encodeIfPresent(requiredAllProperties, forKey: .requiredAllProperties)
     }
-
 }
 
-/// MARK:- AarKayEnd
+// MARK: - AarKayEnd
+
 extension Template {
-    
     public func generatedfiles() -> [Generatedfile] {
         var all = [Generatedfile]()
         var templatesDir = "AarKay/AarKayTemplates"
         let directoryComponents = datafile.directory.components(separatedBy: "/")
         directoryComponents.forEach { _ in templatesDir = "../" + templatesDir }
-        templateFiles(generatedFile: rk_generatedfile(),
-                      templatesDir: templatesDir,
-                      model: model,
-                      all: &all)
+        templateFiles(
+            generatedFile: rk_generatedfile(),
+            templatesDir: templatesDir,
+            model: model,
+            all: &all
+        )
         modelFiles(generatedFile: rk_generatedfile(), model: model, all: &all)
         return all
     }
-    
+
     func templateFiles(generatedFile: Generatedfile, templatesDir: String, model: TemplateModel, all: inout [Generatedfile]) {
         let templateFilename = model.name
-        
+
         var templatesDir = templatesDir
         if let dir = model.dir {
             templatesDir = templatesDir + "/" + dir
@@ -171,9 +170,9 @@ extension Template {
             gfile.ext = "\($0.ext).stencil"
             all.append(gfile)
         }
-        
+
         guard let subs = model.subs else { return }
-        
+
         subs.forEach {
             let sub = $0
             sub.dir = model.name
@@ -189,19 +188,20 @@ extension Template {
                     }
                 }
             }
-            templateFiles(generatedFile: generatedFile,
-                          templatesDir: templatesDir,
-                          model: sub,
-                          all: &all)
+            templateFiles(
+                generatedFile: generatedFile,
+                templatesDir: templatesDir,
+                model: sub,
+                all: &all
+            )
         }
-        
     }
-    
+
     func modelFiles(generatedFile: Generatedfile, model: TemplateModel, all: inout [Generatedfile]) {
         var gFile = generatedFile
         gFile.name = model.name
         all.append(gFile)
-        
+
         guard let subs = model.subs else { return }
         subs.forEach { sub in
             sub.base = (model.properties.isEmpty) ? model.base : model.name
@@ -214,7 +214,5 @@ extension Template {
             subFile.contents = try! Dictionary.encode(data: sub)
             modelFiles(generatedFile: subFile, model: sub, all: &all)
         }
-        
     }
-    
 }

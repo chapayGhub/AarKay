@@ -6,12 +6,11 @@
 //          \/     \/                \/    \/\/
 //
 
-import Foundation
 import AarKayKit
 import AarKayPlugin
+import Foundation
 
 public class PLUGINNAME: NSObject, Templatable {
-
     private var model: PLUGINNAMEModel
     public var generatedfile: Generatedfile
 
@@ -26,7 +25,6 @@ public class PLUGINNAME: NSObject, Templatable {
     public static func resource() -> String {
         return #file
     }
-
 }
 
 public class PLUGINNAMEModel: Codable {
@@ -49,5 +47,4 @@ public class PLUGINNAMEModel: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
     }
-
 }

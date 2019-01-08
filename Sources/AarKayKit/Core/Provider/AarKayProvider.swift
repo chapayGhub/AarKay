@@ -9,10 +9,9 @@ import Foundation
 import Result
 
 final class AarKayProvider: AarKayService {
-    
     let datafileService: DatafileService
     let generatedfileService: GeneratedfileService
-    
+
     init(
         datafileService: DatafileService,
         generatedfileService: GeneratedfileService
@@ -20,5 +19,4 @@ final class AarKayProvider: AarKayService {
         self.datafileService = datafileService
         self.generatedfileService = generatedfileService
     }
-    
 }

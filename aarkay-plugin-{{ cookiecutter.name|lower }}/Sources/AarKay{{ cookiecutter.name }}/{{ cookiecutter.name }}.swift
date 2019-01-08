@@ -6,12 +6,11 @@
 //          \/     \/                \/    \/\/
 //
 
-import Foundation
 import AarKayKit
 import AarKayPlugin
+import Foundation
 
 public class {{ cookiecutter.name }}: NSObject, Templatable {
-
     private var model: {{ cookiecutter.name }}Model
     public var generatedfile: Generatedfile
 
@@ -26,7 +25,6 @@ public class {{ cookiecutter.name }}: NSObject, Templatable {
     public static func resource() -> String {
         return #file
     }
-
 }
 
 public class {{ cookiecutter.name }}Model: Codable {
@@ -49,5 +47,4 @@ public class {{ cookiecutter.name }}Model: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(name, forKey: .name)
     }
-
 }

@@ -8,7 +8,6 @@
 import Foundation
 
 class RunnerFiles {
-
     /// The `main.swift` string for `AarKayRunner`
     static let cliSwift = """
     import Foundation
@@ -25,7 +24,7 @@ class RunnerFiles {
 
     /// The .swift-version string
     static let swiftVersion = "4.2.1"
-    
+
     /// An empty aarkay string that will contain user installed plugins.
     static let aarkayFile = """
     https://github.com/RahulKatariya/AarKay.git, ~> \(AarKayVersion)
@@ -38,11 +37,11 @@ class RunnerFiles {
             \n        \(item.packageDescription())
             """
         }
-        
+
         let dependencies = deps.reduce("") { (result, item) -> String in
             return result + "\n                \(item.targetDescription())"
         }
-        
+
         return """
         // swift-tools-version:4.2
         import PackageDescription
@@ -66,5 +65,4 @@ class RunnerFiles {
         )
         """
     }
-    
 }

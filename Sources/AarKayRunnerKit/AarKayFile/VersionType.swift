@@ -13,7 +13,7 @@ enum VersionType {
     case upToNextMinor(String)
     case branch(String)
     case revision(String)
-    
+
     init(string: String) throws {
         let str = string.trimmingCharacters(in: .whitespacesAndNewlines)
         if str.hasPrefix("b-") {
@@ -43,7 +43,7 @@ enum VersionType {
             throw AarKayError.parsingError
         }
     }
-    
+
     func description() -> String {
         switch self {
         case .exact(let version): return ".exact(\"\(version)\")"

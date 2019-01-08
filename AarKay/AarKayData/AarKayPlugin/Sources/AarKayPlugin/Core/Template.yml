@@ -28,20 +28,19 @@ templates:
       //  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
       //  \____|__  (____  /__|    |____|__ (____  / ____|
       //          \/     \/                \/    \/\/
-      //  
+      //
 
-      import Foundation
       import AarKayKit
       {% if isPlugin %}
       import AarKayPlugin
       {% endif %}
+      import Foundation
       {% for import in imports %}
       import {{import}}
       {% endfor %}
       {% if isTemplate %}
 
       public class {{name}}: {% if base %}{{base}}{% else %}NSObject, Templatable{% endif %} {
-
           private let datafile: Datafile
           private var model: {{name}}Model
           {% if not base %}
@@ -73,7 +72,6 @@ templates:
               return {{inputSerializer}}InputSerializer(components: components, contents: contents)
           }
           {% endif %}
-
       }
       {% endif %}
 
@@ -81,7 +79,6 @@ templates:
       public class {{name}}Model: {% if base %}{{base}}Model{% else %}Codable{% endif %} {}
       {% else %}
       public class {{name}}Model: {% if base %}{{base}}Model{% else %}Codable{% endif %} {
-          
           {% for property in properties %}
           public var {{property.name}}: {{property.type}}
           {% endfor %}
@@ -116,7 +113,7 @@ templates:
           public required init(from decoder: Decoder) throws {
               let container = try decoder.container(keyedBy: CodingKeys.self)
               {% for property in properties %}
-              self.{{property.name}} = try container.decode{% if property.isOptionalOrWrapped %}IfPresent{% endif %}({{property.swiftType}}.self, forKey: .{{property.name}}){% if property.value %} ?? {{property.value}} {% endif %}
+              self.{{property.name}} = try container.decode{% if property.isOptionalOrWrapped %}IfPresent{% endif %}({{property.swiftType}}.self, forKey: .{{property.name}}){% if property.value %} ?? {{property.value}}{% endif %}
               {% endfor %}
               {% if base %}
               try super.init(from: decoder)
@@ -141,6 +138,5 @@ templates:
               try super.encode(to: encoder)
               {% endif %}
           }
-
       }
       {% endif %}

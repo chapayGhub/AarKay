@@ -9,11 +9,9 @@ import Foundation
 import Result
 
 protocol GeneratedfileService {
-    
     func renderedFiles(
         url: URL,
         generatedfiles: [Result<Generatedfile, AnyError>],
         context: [String: Any]?
     ) -> [Result<Renderedfile, AnyError>]
-    
 }

@@ -9,7 +9,6 @@ import Foundation
 
 /// A type that encapsulates bash commands.
 class BashProcess {
-
     /// Creates a process to run a command.
     ///
     /// - Parameters:
@@ -25,5 +24,4 @@ class BashProcess {
         process.waitUntilExit()
         return process.terminationStatus
     }
-    
 }

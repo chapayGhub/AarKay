@@ -4,10 +4,10 @@
 //  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
 //  \____|__  (____  /__|    |____|__ (____  / ____|
 //          \/     \/                \/    \/\/
-//  
+//
 
-import Foundation
 import AarKayKit
+import Foundation
 
 public class ArgModel: Codable {
     public var name: String
@@ -16,29 +16,29 @@ public class ArgModel: Codable {
 
     public var isOptional: Bool {
         /// <aarkay isOptional>
-        return type.hasSuffix("?")
+        return self.type.hasSuffix("?")
         /// </aarkay>
     }
 
     public var isWrapped: Bool {
         /// <aarkay isWrapped>
-        return type.hasSuffix("!")
+        return self.type.hasSuffix("!")
         /// </aarkay>
     }
 
     public var isOptionalOrWrapped: Bool {
         /// <aarkay isOptionalOrWrapped>
-        return isOptional || isWrapped
+        return self.isOptional || self.isWrapped
         /// </aarkay>
     }
 
     public var isArray: Bool {
         /// <aarkay isArray>
-        if swiftType.hasPrefix("[[") && swiftType.hasSuffix("]]") {
+        if self.swiftType.hasPrefix("[[") && self.swiftType.hasSuffix("]]") {
             return true
-        } else if swiftType.hasPrefix("[") &&
-            swiftType.hasSuffix("]") &&
-            !swiftType.contains(":") {
+        } else if self.swiftType.hasPrefix("[") &&
+            self.swiftType.hasSuffix("]") &&
+            !self.swiftType.contains(":") {
             return true
         } else {
             return false
@@ -48,7 +48,7 @@ public class ArgModel: Codable {
 
     public var swiftType: String {
         /// <aarkay swiftType>
-        return isOptionalOrWrapped ? String(type.dropLast()) : type
+        return self.isOptionalOrWrapped ? String(self.type.dropLast()) : self.type
         /// </aarkay>
     }
 
@@ -74,9 +74,11 @@ public class ArgModel: Codable {
         let string = try container.decode(String.self)
         let names = ["name", "type", "value"]
         let types = ["String", "String", "String?"]
-        let nameTypeValue = try NameTypeValue(names: names,
-                                          types: types,
-                                          value: string).toDictionary()
+        let nameTypeValue = try NameTypeValue(
+            names: names,
+            types: types,
+            value: string
+        ).toDictionary()
         self.name = nameTypeValue["name"] as! String
         self.type = nameTypeValue["type"] as! String
         self.value = nameTypeValue["value"] as? String
@@ -94,5 +96,4 @@ public class ArgModel: Codable {
         try container.encode(isArray, forKey: .isArray)
         try container.encode(swiftType, forKey: .swiftType)
     }
-
 }

@@ -14,13 +14,14 @@ public struct Datafile {
     public let template: String
     public let contents: String
     public let globalContext: [String: Any]?
-    
-    init(plugin: String,
-         name: String,
-         directory: String,
-         template: String,
-         contents: String,
-         globalContext: [String: Any]?
+
+    init(
+        plugin: String,
+        name: String,
+        directory: String,
+        template: String,
+        contents: String,
+        globalContext: [String: Any]?
     ) {
         self.plugin = plugin
         self.name = name

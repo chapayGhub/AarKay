@@ -8,10 +8,9 @@
 import Foundation
 
 protocol AarKayService {
-    
     var datafileService: DatafileService { get }
     var generatedfileService: GeneratedfileService { get }
-    
+
     init(
         datafileService: DatafileService,
         generatedfileService: GeneratedfileService

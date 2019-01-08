@@ -11,10 +11,10 @@ import Foundation
 public struct AarKayOptions {
     /// The force flag.
     let force: Bool
-    
+
     /// The verbose flag.
     let verbose: Bool
-    
+
     /// Initializes `AarKayOptions`
     ///
     /// - Parameters:

@@ -10,7 +10,6 @@ import Foundation
 extension FileManager: GitExtensionsProvider {}
 
 extension Git where Base == FileManager {
-    
     /// Checks whether the directory has files present inside and if there are files, then it checks whether it is a clean git repository without uncomitted changes.
     ///
     /// - Parameter url: The url of directory.
@@ -21,7 +20,7 @@ extension Git where Base == FileManager {
             .filter { $0 != ".DS_Strore" }
         // Return false if the directory is empty
         guard contents.count != 0 else { return false }
-        
+
         // Whether the url is a git directory
         let status = BashProcess.run(
             command: "[ -d .git ] || git rev-parse --git-dir > /dev/null 2>&1",
@@ -29,11 +28,10 @@ extension Git where Base == FileManager {
         )
         // Return false if the directory is not a git repository
         guard status == 0 else { return false }
-        
+
         return BashProcess.run(
             command: "git diff --quiet HEAD",
             url: url
         ) == 0 ? false : true
     }
-    
 }

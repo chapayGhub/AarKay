@@ -11,7 +11,7 @@ struct Version {
     let major: Int
     let minor: Int
     let patch: Int
-    
+
     init(string: String) throws {
         let components = string
             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -20,14 +20,14 @@ struct Version {
             let major = Int(components[0]),
             let minor = Int(components[1]),
             let patch = Int(components[2]) else {
-                throw AarKayError.parsingError
+            throw AarKayError.parsingError
         }
         self.major = major
         self.minor = minor
         self.patch = patch
     }
-    
+
     func description() -> String {
-        return "\(major).\(minor).\(patch)"
+        return "\(self.major).\(self.minor).\(self.patch)"
     }
 }

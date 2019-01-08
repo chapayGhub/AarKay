@@ -9,10 +9,9 @@ import Foundation
 import Result
 
 public class AarKayKit {
-    
     let datafile: Datafile
     let aarkayService: AarKayService
-    
+
     init(
         datafile: Datafile,
         aarkayService: AarKayService
@@ -20,11 +19,9 @@ public class AarKayKit {
         self.datafile = datafile
         self.aarkayService = aarkayService
     }
-    
 }
 
 extension AarKayKit {
-    
     public static func bootstrap(
         plugin: String,
         globalContext: [String: Any]?,
@@ -33,7 +30,6 @@ extension AarKayKit {
         template: String,
         contents: String
     ) throws -> [Result<Renderedfile, AnyError>] {
-        
         let datafile = Datafile(
             plugin: plugin,
             name: fileName,
@@ -42,54 +38,51 @@ extension AarKayKit {
             contents: contents,
             globalContext: globalContext
         )
- 
+
         let datafileService: DatafileService = DatafileProvider()
         let generatedfileService: GeneratedfileService = GeneratedfileProvider()
         let aarkayService: AarKayService = AarKayProvider(
             datafileService: datafileService,
             generatedfileService: generatedfileService
         )
-        
+
         let aarkayKit = AarKayKit(
             datafile: datafile,
             aarkayService: aarkayService
         )
-        
+
         return try aarkayKit.bootstrap()
     }
-    
 }
 
 extension AarKayKit {
-    
     func bootstrap() throws -> [Result<Renderedfile, AnyError>] {
-        
         // 1.
         var templateClass: Templatable.Type!
         var context: Any?
         do {
-            templateClass = try aarkayService.datafileService.templateClass(
-                plugin: datafile.plugin,
-                template: datafile.template
+            templateClass = try self.aarkayService.datafileService.templateClass(
+                plugin: self.datafile.plugin,
+                template: self.datafile.template
             )
             context = try templateClass
                 .inputSerializer()
-                .context(contents: datafile.contents)
+                .context(contents: self.datafile.contents)
         } catch {
             throw AnyError(error)
         }
-        
+
         // 2.
         var fileName: String?
         var contextArray: [[String: Any]]
-        if datafile.name.rk.isCollection {
+        if self.datafile.name.rk.isCollection {
             fileName = nil
             contextArray = context as? [[String: Any]] ?? [[:]]
         } else {
-            fileName = datafile.name
+            fileName = self.datafile.name
             contextArray = [context] as? [[String: Any]] ?? [[:]]
         }
-        
+
         // 3.
         let generatedFiles = aarkayService.datafileService.generatedfiles(
             datafile: datafile,
@@ -97,13 +90,12 @@ extension AarKayKit {
             contextArray: contextArray,
             templateClass: templateClass
         )
-        
+
         // 4.
-        return aarkayService.generatedfileService.renderedFiles(
+        return self.aarkayService.generatedfileService.renderedFiles(
             url: templateClass.resource().rk.templatesDirectory(),
             generatedfiles: generatedFiles,
-            context: datafile.globalContext
+            context: self.datafile.globalContext
         )
     }
-    
 }

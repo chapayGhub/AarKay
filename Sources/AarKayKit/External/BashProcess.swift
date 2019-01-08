@@ -8,7 +8,6 @@
 import Foundation
 
 class BashProcess {
-    
     static func run(command: String, cwd: URL) -> Int32 {
         let process = Process()
         process.launchPath = "/bin/bash"
@@ -18,5 +17,4 @@ class BashProcess {
         process.waitUntilExit()
         return process.terminationStatus
     }
-    
 }

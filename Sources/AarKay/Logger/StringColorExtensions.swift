@@ -22,16 +22,16 @@ extension PrettyColor {
 extension String {
     /// Wraps self with red color
     var red: String { return PrettyColor.red.colored(self) }
-    
+
     /// Wraps self with green color
     var green: String { return PrettyColor.green.colored(self) }
-    
+
     /// Wraps self with yellow color
     var yellow: String { return PrettyColor.yellow.colored(self) }
-    
+
     /// Wraps self with blue color
     var blue: String { return PrettyColor.blue.colored(self) }
-    
+
     /// Wraps self with magenta color
     var magenta: String { return PrettyColor.magenta.colored(self) }
 }

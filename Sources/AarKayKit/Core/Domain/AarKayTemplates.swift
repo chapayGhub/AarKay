@@ -9,21 +9,19 @@ import Foundation
 import Stencil
 
 class AarKayTemplates {
-    
     static let `default` = AarKayTemplates()
 
     struct Cache {
         let environment: Environment
         let files: [String: URL]
     }
-    
+
     private var environmentCache = Dictionary<URL, Cache>()
-    
+
     func render(url: URL, generatedfile: Generatedfile, context: [String: Any]?) throws -> Renderedfile {
-        
         var stringContents: String!
         var pathExtension: String = generatedfile.ext ?? ""
-        
+
         if let templateString = generatedfile.templateString {
             stringContents = templateString
         } else {
@@ -35,7 +33,7 @@ class AarKayTemplates {
             stringContents = string
             pathExtension = ext
         }
-        
+
         let fileName = pathExtension.isEmpty ? generatedfile.name : generatedfile.name + "." + pathExtension
         let file = Renderedfile(fileName: fileName, directory: generatedfile.directory, override: generatedfile.override) {
             if let currentString = $0 {
@@ -46,7 +44,7 @@ class AarKayTemplates {
         }
         return file
     }
-    
+
     private func renderTemplate(
         url: URL,
         name: String,
@@ -54,7 +52,7 @@ class AarKayTemplates {
     ) throws -> (String, String) {
         let cache = self.cache(url: url)
         guard let templateUrl = cache.files[name] else { throw AarKayError.templateNotFound(name) }
-        if let (templateName, ext)  = try url.rk.template(url: templateUrl) {
+        if let (templateName, ext) = try url.rk.template(url: templateUrl) {
             let rendered = try cache.environment.renderTemplate(
                 name: templateName, context: context
             )
@@ -66,7 +64,7 @@ class AarKayTemplates {
             return (rendered, "")
         }
     }
-    
+
     private func cache(url: URL) -> Cache {
         if let cache = environmentCache[url] {
             return cache
@@ -79,10 +77,9 @@ class AarKayTemplates {
                 var initial = initial
                 initial[name] = item
                 return initial
-        }
+            }
         let cache = Cache(environment: env, files: fcs)
         environmentCache[url] = cache
         return cache
     }
-    
 }

@@ -9,7 +9,6 @@ import Foundation
 
 /// Type that encapsulates creation of all files required by `AarKayRunner`.
 public class Bootstrapper {
-
     /// Creates all files required to run `AarKay`.
     ///
     /// - Parameters:
@@ -27,10 +26,10 @@ public class Bootstrapper {
                 try FileManager.default.removeItem(at: packageResolvedUrl)
             }
         }
-        try createCLISwift(global: global, force: force)
-        try createAarKayFile(global: global)
-        try updatePackageSwift(global: global)
-        try createSwiftVersion(global: global, force: force)
+        try self.createCLISwift(global: global, force: force)
+        try self.createAarKayFile(global: global)
+        try self.updatePackageSwift(global: global)
+        try self.createSwiftVersion(global: global, force: force)
     }
 
     /// Creates CLI main.swift file
@@ -63,10 +62,10 @@ public class Bootstrapper {
     private static func createAarKayFile(global: Bool) throws {
         let url = AarKayPaths.aarkayFile(global: global)
         if !FileManager.default.fileExists(atPath: url.path) {
-            try write(string: RunnerFiles.aarkayFile, url: url, force: false)
+            try self.write(string: RunnerFiles.aarkayFile, url: url, force: false)
         }
     }
-    
+
     /// Updates `Package.swift` with `AarKayFile` dependencies.
     ///
     /// - Parameters:
@@ -80,7 +79,7 @@ public class Bootstrapper {
         let url = AarKayPaths.packageSwift(global: global)
         try write(string: contents, url: url, force: true)
     }
-    
+
     /// Writes the string to the destination url atomically and using .utf8 encoding.
     ///
     /// - Parameters:
@@ -101,5 +100,4 @@ public class Bootstrapper {
         )
         try string.write(to: url, atomically: true, encoding: .utf8)
     }
-    
 }

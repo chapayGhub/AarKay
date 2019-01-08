@@ -10,21 +10,20 @@ import Foundation
 
 /// Represents an AarKay Project.
 public class AarKay {
-    
     /// The project url.
     public let url: URL
-    
+
     /// The options.
     let options: AarKayOptions
-    
+
     /// The file manager.
     let fileManager: FileManager
-    
+
     /// The data files url relative to the project url.
     lazy var aarkayFilesUrl: URL = {
-        return url.appendingPathComponent("AarKay/AarKayData", isDirectory: true)
+        url.appendingPathComponent("AarKay/AarKayData", isDirectory: true)
     }()
-    
+
     /// Constructs an `AarKay` project.
     ///
     /// - Parameters:
@@ -40,56 +39,56 @@ public class AarKay {
         self.options = options
         self.fileManager = fileManager
     }
-    
+
     /// Bootstrap files generation process.
     public func bootstrap() {
         /// Wait for all logs to be printed on console before terminating the program.
         defer { AarKayLogger.waitForCompletion() }
-        
+
         /// Log the url and AarkayFiles url.
-        AarKayLogger.logTable(url: url, datafilesUrl: aarkayFilesUrl)
-        
+        AarKayLogger.logTable(url: self.url, datafilesUrl: self.aarkayFilesUrl)
+
         /// Log if the AarKayFiles directory is empty.
-        guard FileManager.default.fileExists(atPath: aarkayFilesUrl.path) else {
+        guard FileManager.default.fileExists(atPath: self.aarkayFilesUrl.path) else {
             // FIXME: - A better message on how to get started will help the user who is coming for the first time.
             AarKayLogger.logNoDatafiles(); return
         }
-        
+
         do {
             /// Skip checking whether directory is dirty if force is set to true
-            if !options.force {
-                if try fileManager.git.isDirty(url: url) {
+            if !self.options.force {
+                if try self.fileManager.git.isDirty(url: self.url) {
                     AarKayLogger.logDirtyRepo(); return
                 }
             }
-            
+
             /// The global context to be applied to all files being generated.
             let globalContext = try aarkayGlobalContext()
-            
+
             /// First level of subdirectories in AarKayFiles directory are the names of the plugins.
             let urls = try fileManager.contentsOfDirectory(
                 at: aarkayFilesUrl,
                 includingPropertiesForKeys: [.isDirectoryKey],
                 options: .skipsHiddenFiles
             )
-            
+
             urls.forEach {
                 let plugin = $0.lastPathComponent
-                
+
                 /// Create directory tree mirror with source as the AarKayFiles url and destination as the project url.
                 let dirTreeMirror = DirTreeMirror(
                     sourceUrl: $0,
                     destinationUrl: url,
                     fileManager: fileManager
                 )
-                
+
                 do {
-                    try dirTreeMirror.bootstrap { ( sourceUrl: URL, destinationUrl: URL) in
+                    try dirTreeMirror.bootstrap { (sourceUrl: URL, destinationUrl: URL) in
                         /// Ignore the system dotfiles in AarKayFiles directory. Users can create custom dotfiles using string "dot" like 'dot.filename.yml' which will be generated as '.filename.ext'.
                         guard !sourceUrl.lastPathComponent.hasPrefix(".") else { return }
-                        
+
                         AarKayLogger.logDatafile(at: sourceUrl)
-                        
+
                         /// All Datafiles will have atleast two components seperated by ".".
                         /// The latter component will be the extension of type of serialization file like yml, json, exel and so on and the first component as the name of the template and the name of filename.
                         ///
@@ -117,23 +116,25 @@ public class AarKay {
                             AarKayLogger.logErrorMessage("Invalid Datafile name at \(sourceUrl.lastPathComponent)")
                             return
                         }
-                        
+
                         /// Skip `dot` prefix if present.
                         let name = components.count == 4 ? components[1] : components[0]
-                        let template = components[components.count-2]
+                        let template = components[components.count - 2]
                         let directory = sourceUrl.deletingLastPathComponent().relativeString
                         do {
                             /// Read the contents of the Datafile.
                             let contents = try String(contentsOf: sourceUrl)
-                            
+
                             /// Returns all generated files result.
-                            let renderedfiles = try AarKayKit.bootstrap(plugin: plugin,
-                                                                        globalContext: globalContext,
-                                                                        fileName: name,
-                                                                        directory: directory,
-                                                                        template: template,
-                                                                        contents: contents)
-                            
+                            let renderedfiles = try AarKayKit.bootstrap(
+                                plugin: plugin,
+                                globalContext: globalContext,
+                                fileName: name,
+                                directory: directory,
+                                template: template,
+                                contents: contents
+                            )
+
                             try renderedfiles.forEach { renderedfile in
                                 switch renderedfile {
                                 case .success(let value):
@@ -158,7 +159,7 @@ public class AarKay {
             AarKayLogger.logError(error)
         }
     }
-    
+
     /// Reads the current file at url and merges the contents of `RenderedFile` to it.
     ///
     /// - Parameters:
@@ -175,9 +176,9 @@ public class AarKay {
         url.appendPathComponent(renderedfile.fileName)
         let stringBlock = renderedfile.stringBlock
         let override = renderedfile.override
-        if fileManager.fileExists(atPath: url.path) {
+        if self.fileManager.fileExists(atPath: url.path) {
             if !override {
-                if options.verbose {
+                if self.options.verbose {
                     AarKayLogger.logFileSkipped(at: url)
                 }
             } else {
@@ -187,7 +188,7 @@ public class AarKay {
                     try string.write(toFile: url.path, atomically: true, encoding: .utf8)
                     AarKayLogger.logFileModified(at: url)
                 } else {
-                    if options.verbose {
+                    if self.options.verbose {
                         AarKayLogger.logFileSkipped(at: url)
                     }
                 }
@@ -199,7 +200,7 @@ public class AarKay {
             AarKayLogger.logFileAdded(at: url)
         }
     }
-    
+
     /// Reads the global context url from the path "{PROJECT_ROOT}/AarKay/.aarkay" and serializes it into a dictionary using Yaml serialzer.
     ///
     /// - Returns: The dictionary from contents.
@@ -211,5 +212,4 @@ public class AarKay {
         }
         return try YamlInputSerializer.load(contents) as? [String: Any]
     }
-    
 }

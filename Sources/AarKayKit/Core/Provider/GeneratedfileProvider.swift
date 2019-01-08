@@ -9,7 +9,6 @@ import Foundation
 import Result
 
 class GeneratedfileProvider: GeneratedfileService {
-    
     func renderedFiles(
         url: URL,
         generatedfiles: [Result<Generatedfile, AnyError>],
@@ -22,5 +21,4 @@ class GeneratedfileProvider: GeneratedfileService {
         }
         return renderedFiles
     }
-    
 }

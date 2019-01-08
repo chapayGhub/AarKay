@@ -8,7 +8,6 @@
 import Foundation
 
 extension FileManager {
-    
     public func subDirectories(atUrl url: URL) -> [URL]? {
         let enumerator = self.enumerator(at: url, includingPropertiesForKeys: [.isDirectoryKey])
         let results = enumerator?
@@ -19,10 +18,10 @@ extension FileManager {
                 } else {
                     return true
                 }
-        }
+            }
         return results
     }
-    
+
     public func subFiles(atUrl url: URL) -> [URL]? {
         let enumerator = self.enumerator(at: url, includingPropertiesForKeys: [.isDirectoryKey])
         let results = enumerator?
@@ -33,25 +32,24 @@ extension FileManager {
                 } else {
                     return false
                 }
-        }
+            }
         return results
     }
-    
+
     public func isDirectory(url: URL) -> Bool? {
-#if os(Linux)
+        #if os(Linux)
         var isDir: ObjCBool = ObjCBool(false)
         if fileExists(atPath: url.path, isDirectory: &isDir) {
             return isDir.boolValue
         } else {
             return nil
         }
-#else
+        #else
         do {
             return try url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory
         } catch {
             return false
         }
-#endif
+        #endif
     }
-    
 }

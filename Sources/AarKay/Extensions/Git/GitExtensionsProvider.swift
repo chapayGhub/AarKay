@@ -15,7 +15,7 @@ extension GitExtensionsProvider {
     public var git: Git<Self> {
         return Git(self)
     }
-    
+
     /// A proxy which hosts static git extensions for the type of `self`.
     public static var git: Git<Self>.Type {
         return Git<Self>.self
@@ -26,7 +26,7 @@ extension GitExtensionsProvider {
 public struct Git<Base> {
     /// The `Base` instance the extensions would be invoked with.
     public let base: Base
-    
+
     /// Construct a proxy
     ///
     /// - parameters:

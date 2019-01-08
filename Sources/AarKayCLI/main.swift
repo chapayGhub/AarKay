@@ -1,5 +1,5 @@
-import Foundation
 import AarKay
+import Foundation
 
 /// The root url of the project from current file location which is ./Sources/AarKayCLI/main.swift.
 let url = URL(fileURLWithPath: #file)

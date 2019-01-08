@@ -8,7 +8,7 @@ class AarKayTests: XCTestCase {
         // results.
         XCTAssertEqual("Hello, World!", "Hello, World!")
     }
-    
+
     static var allTests = [
         ("testExample", testExample),
     ]

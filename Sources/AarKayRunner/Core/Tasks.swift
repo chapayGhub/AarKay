@@ -5,15 +5,14 @@
 //  Created by RahulKatariya on 01/01/19.
 //
 
+import AarKayRunnerKit
 import Foundation
 import ReactiveSwift
 import ReactiveTask
 import Result
-import AarKayRunnerKit
 
 /// A type that encapsulates all task events in AarKay.
 class Tasks {
-    
     /// Builds the `AarKayRunner` swift package.
     ///
     /// - Parameter path: The working directory path.
@@ -21,7 +20,7 @@ class Tasks {
     static func build(at path: String) -> Result<(), AarKayError> {
         let buildArguments = [
             "build", "-c", "debug",
-            "-Xswiftc", "-target", "-Xswiftc", "x86_64-apple-macosx10.12"
+            "-Xswiftc", "-target", "-Xswiftc", "x86_64-apple-macosx10.12",
         ]
         let task = Task(
             "/usr/bin/swift",
@@ -30,7 +29,7 @@ class Tasks {
         )
         return task.run()
     }
-    
+
     /// Updates the dependencies of `AarKayRunner` swift package
     ///
     /// - Parameter path: The working directory path.
@@ -38,7 +37,7 @@ class Tasks {
     static func update(at path: String) -> Result<(), AarKayError> {
         let buildArguments = [
             "package",
-            "update"
+            "update",
         ]
         let task = Task(
             "/usr/bin/swift",
@@ -47,9 +46,9 @@ class Tasks {
         )
         let result = task.run()
         guard result.error == nil else { return result }
-        return build(at: path)
+        return self.build(at: path)
     }
-    
+
     /// Resolves the `AarKayRunner` swift packages with respect to Package.resolved.
     ///
     /// - Parameter path: The working directory path.
@@ -57,7 +56,7 @@ class Tasks {
     static func install(at path: String) -> Result<(), AarKayError> {
         let buildArguments = [
             "package",
-            "resolve"
+            "resolve",
         ]
         let task = Task(
             "/usr/bin/swift",
@@ -66,9 +65,9 @@ class Tasks {
         )
         let result = task.run()
         guard result.error == nil else { return result }
-        return build(at: path)
+        return self.build(at: path)
     }
-    
+
     /// Executes the path as the shell command.
     ///
     /// - Parameter
@@ -78,5 +77,4 @@ class Tasks {
     static func execute(at path: String, arguments: [String] = []) -> Result<(), AarKayError> {
         return Task(path, arguments: arguments).run()
     }
-    
 }

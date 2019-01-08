@@ -9,17 +9,15 @@ import Foundation
 import Result
 
 protocol DatafileService {
-    
     func templateClass(
         plugin: String,
         template: String
     ) throws -> Templatable.Type
-    
+
     func generatedfiles(
         datafile: Datafile,
         fileName: String?,
         contextArray: [[String: Any]],
         templateClass: Templatable.Type
     ) -> [Result<Generatedfile, AnyError>]
-    
 }

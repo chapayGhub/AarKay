@@ -11,14 +11,13 @@ import Yams
 extension String: AarKayExtensionsProvider {}
 
 extension AarKay where Base == String {
-    
     var standardized: String {
         return base.replacingOccurrences(of: ".", with: ":")
             .replacingOccurrences(of: "dot:", with: ".")
             .components(separatedBy: ":")
             .first!
     }
-    
+
     func templatesDirectory() -> URL {
         var url = URL(string: base)!
         while url.lastPathComponent != "Sources" {
@@ -28,21 +27,21 @@ extension AarKay where Base == String {
             .deletingLastPathComponent()
             .appendingPathComponent(
                 "AarKay/AarKayTemplates", isDirectory: true
-        )
+            )
         if url.path.hasPrefix("/tmp") {
             print("[OLD]", url.absoluteString)
             let pathComponents = Array(url.pathComponents.dropFirst().dropFirst())
             let newPath = "/" + pathComponents.joined(separator: "/")
-            url = URL(fileURLWithPath: newPath,isDirectory: true)
+            url = URL(fileURLWithPath: newPath, isDirectory: true)
             print("[NEW]", url.absoluteString)
         }
         return url
     }
-    
+
     var isCollection: Bool {
         return base.hasPrefix("[") && base.hasSuffix("]")
     }
-    
+
     func merge(templateString: String) -> String {
         var string = templateString
         let blockRegexPattern = "\\n(.*)<aarkay (.*)>([\\s\\S]*?)\\n(.*)<\\/aarkay>(.*)\\n"
@@ -59,7 +58,7 @@ extension AarKay where Base == String {
                 }
             }
         }
-        
+
         let endRegexPattern = "\\n(.*) AarKayEnd"
         if let existingRange = string.range(of: endRegexPattern, options: [.regularExpression]) {
             string = String(string[..<existingRange.lowerBound])
@@ -69,5 +68,4 @@ extension AarKay where Base == String {
         }
         return string
     }
-    
 }

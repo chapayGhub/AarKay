@@ -5,8 +5,8 @@
 //  Created by RahulKatariya on 06/01/19.
 //
 
-import Quick
 import Nimble
+import Quick
 @testable import AarKayRunnerKit
 
 class VersionTypeSpec: QuickSpec {
@@ -23,15 +23,15 @@ class VersionTypeSpec: QuickSpec {
                     (" b-develop ", ".branch(\"develop\")"),
                     ("r-3483de34e2432", ".revision(\"3483de34e2432\")"),
                 ]
-                
-                versionMapping.forEach { (string, description) in
+
+                versionMapping.forEach { string, description in
                     it("should pass") {
                         let version = try? VersionType(string: string)
                         expect(version?.description()) == description
                     }
                 }
             }
-            
+
             context("when the input is wrong") {
                 let failVersions = [
                     " 0.0.0.0",
@@ -46,7 +46,7 @@ class VersionTypeSpec: QuickSpec {
                     "b-",
                     "r3483d",
                 ]
-                
+
                 failVersions.forEach { string in
                     it("should fail") {
                         let version = try? VersionType(string: string)

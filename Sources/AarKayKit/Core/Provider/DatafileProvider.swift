@@ -9,7 +9,6 @@ import Foundation
 import Result
 
 class DatafileProvider: DatafileService {
-    
     func templateClass(
         plugin: String,
         template: String
@@ -22,7 +21,7 @@ class DatafileProvider: DatafileService {
             throw AarKayError.missingPlugin(plugin + "." + template)
         }
     }
-    
+
     func generatedfiles(
         datafile: Datafile,
         fileName: String?,
@@ -45,11 +44,13 @@ class DatafileProvider: DatafileService {
                 return generatedfile
             }
         }
-        return templateGeneratedfiles(datafile: datafile,
-                                      generatedfiles: files,
-                                      templateClass: templateClass)
+        return self.templateGeneratedfiles(
+            datafile: datafile,
+            generatedfiles: files,
+            templateClass: templateClass
+        )
     }
-    
+
     func templateGeneratedfiles(
         datafile: Datafile,
         generatedfiles: [Result<Generatedfile, AnyError>],
@@ -58,28 +59,32 @@ class DatafileProvider: DatafileService {
         return generatedfiles.reduce([Result<Generatedfile, AnyError>]()) { original, generatedfile in
             switch generatedfile {
             case .success(let value):
-                let results = templateGeneratedfiles(datafile: datafile,
-                                                     generatedfile: value,
-                                                     templateClass: templateClass)
+                let results = templateGeneratedfiles(
+                    datafile: datafile,
+                    generatedfile: value,
+                    templateClass: templateClass
+                )
                 return original + results
             case .failure(let failure):
                 return original + [.failure(failure)]
             }
         }
     }
-    
+
     func templateGeneratedfiles(
         datafile: Datafile,
         generatedfile: Generatedfile,
         templateClass: Templatable.Type
     ) -> [Result<Generatedfile, AnyError>] {
         do {
-            if let templatable = try templateClass.init(datafile: datafile,
-                                                        generatedfile: generatedfile) {
+            if let templatable = try templateClass.init(
+                datafile: datafile,
+                generatedfile: generatedfile
+            ) {
                 return templatable.generatedfiles().map { .success($0) }
             } else {
                 let error = AarKayError.modelDecodingFailure(
-                    generatedfile.name, generatedfile.template+"Model"
+                    generatedfile.name, generatedfile.template + "Model"
                 )
                 return [Result.failure(AnyError(error))]
             }
@@ -87,5 +92,4 @@ class DatafileProvider: DatafileService {
             return [Result.failure(AnyError(error))]
         }
     }
-
 }

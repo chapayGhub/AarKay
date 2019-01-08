@@ -51,7 +51,7 @@ let package = Package(
             name: "AarKayKit",
             dependencies: ["StencilSwiftKit", "Result", "Yams"]
         ),
-          .target(
+        .target(
             name: "AarKayPlugin",
             dependencies: ["AarKayKit"]
         ),

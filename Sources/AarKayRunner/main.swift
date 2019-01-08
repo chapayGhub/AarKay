@@ -1,7 +1,7 @@
-import Foundation
-import Commandant
-import ReactiveTask
 import AarKayRunnerKit
+import Commandant
+import Foundation
+import ReactiveTask
 
 /// Command registry containing all commands supported by `AarKay`.
 let registry = CommandRegistry<AarKayError>()

@@ -29,13 +29,13 @@ import Foundation
 public class DirTreeMirror {
     /// The source url.
     let sourceUrl: URL
-    
+
     /// The destination url.
     let destinationUrl: URL
-    
+
     /// The file manager.
     let fileManager: FileManager
-    
+
     /// Initializes the `DirTreeMirror` with source and destination directories.
     ///
     /// - Parameters:
@@ -51,12 +51,12 @@ public class DirTreeMirror {
         self.destinationUrl = destinationUrl
         self.fileManager = fileManager
     }
-    
+
     /// Starts the mirroring of the source directory with the destination directory and executes a block with each source path and its respected mirror path.
     ///
     /// - Parameter fileBlock: The block to execute with source url and its mirror.
     /// - Throws: An error if reading subpathsOfDirectory returns nil.
-    public func bootstrap(fileBlock: (URL, URL) -> ()) throws {
+    public func bootstrap(fileBlock: (URL, URL) -> Void) throws {
         let subpaths = try fileManager.subpathsOfDirectory(atPath: sourceUrl.path)
         let subUrls: [URL] = subpaths
             .filter { return !$0.hasPrefix(".") }

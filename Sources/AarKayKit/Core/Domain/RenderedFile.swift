@@ -12,11 +12,12 @@ public struct Renderedfile {
     public let directory: String?
     public let override: Bool
     public let stringBlock: (String?) -> String
-    
-    init(fileName: String,
-         directory: String?,
-         override: Bool,
-         stringBlock: @escaping (String?) -> String
+
+    init(
+        fileName: String,
+        directory: String?,
+        override: Bool,
+        stringBlock: @escaping (String?) -> String
     ) {
         self.fileName = fileName
         self.directory = directory

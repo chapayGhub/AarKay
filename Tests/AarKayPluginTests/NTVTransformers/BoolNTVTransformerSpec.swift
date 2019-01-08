@@ -6,16 +6,13 @@
 //
 
 import Foundation
-import Quick
 import Nimble
+import Quick
 @testable import AarKayPlugin
 
 class BoolNTVTransformerSpec: QuickSpec {
-    
     override func spec() {
-        
         describe("BoolNTVTransformer") {
-            
             context("when value is true") {
                 it("should be true with Bool Type") {
                     let value = TypeValueTransformer(type: "Bool", value: "true")?.value
@@ -23,11 +20,11 @@ class BoolNTVTransformerSpec: QuickSpec {
                         fail("It should return the type as Bool")
                         return
                     }
-                    
+
                     expect(expected).to(beTruthy())
                 }
             }
-            
+
             context("when value is yes") {
                 it("should be true with Bool Type") {
                     let value = TypeValueTransformer(type: "Bool", value: "yes")?.value
@@ -35,11 +32,11 @@ class BoolNTVTransformerSpec: QuickSpec {
                         fail("It should return the type as Bool")
                         return
                     }
-                    
+
                     expect(expected).to(beTruthy())
                 }
             }
-            
+
             context("when value is 1") {
                 it("should be true with Bool Type") {
                     let value = TypeValueTransformer(type: "Bool", value: "1")?.value
@@ -47,11 +44,11 @@ class BoolNTVTransformerSpec: QuickSpec {
                         fail("It should return the type as Bool")
                         return
                     }
-                    
+
                     expect(expected).to(beTruthy())
                 }
             }
-            
+
             context("when value is false") {
                 it("should be false with Bool Type") {
                     let value = TypeValueTransformer(type: "Bool", value: "false")?.value
@@ -59,11 +56,11 @@ class BoolNTVTransformerSpec: QuickSpec {
                         fail("It should return the type as Bool")
                         return
                     }
-                    
+
                     expect(expected).to(beFalsy())
                 }
             }
-            
+
             context("when value is no") {
                 it("should be false with Bool Type") {
                     let value = TypeValueTransformer(type: "Bool", value: "no")?.value
@@ -71,11 +68,11 @@ class BoolNTVTransformerSpec: QuickSpec {
                         fail("It should return the type as Bool")
                         return
                     }
-                    
+
                     expect(expected).to(beFalsy())
                 }
             }
-            
+
             context("when value is 0") {
                 it("should be false with Bool Type") {
                     let value = TypeValueTransformer(type: "Bool", value: "0")?.value
@@ -83,19 +80,16 @@ class BoolNTVTransformerSpec: QuickSpec {
                         fail("It should return the type as Bool")
                         return
                     }
-                    
+
                     expect(expected).to(beFalsy())
                 }
             }
-            
+
             context("when value is unknown") {
                 it("should be false with Bool Type") {
                     expect(TypeValueTransformer(type: "Bool", value: "any")?.value).to(beNil())
                 }
             }
-            
         }
-        
     }
-    
 }

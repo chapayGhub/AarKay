@@ -4,20 +4,19 @@
 //  /    |    \/ __ \|  | \/ |    |  \ / __ \\___  |
 //  \____|__  (____  /__|    |____|__ (____  / ____|
 //          \/     \/                \/    \/\/
-//  
+//
 
-import Foundation
 import AarKayKit
 {% if isPlugin %}
 import AarKayPlugin
 {% endif %}
+import Foundation
 {% for import in imports %}
 import {{import}}
 {% endfor %}
 {% if isTemplate %}
 
 public class {{name}}: {% if base %}{{base}}{% else %}NSObject, Templatable{% endif %} {
-
     private let datafile: Datafile
     private var model: {{name}}Model
     {% if not base %}
@@ -49,7 +48,6 @@ public class {{name}}: {% if base %}{{base}}{% else %}NSObject, Templatable{% en
         return {{inputSerializer}}InputSerializer(components: components, contents: contents)
     }
     {% endif %}
-
 }
 {% endif %}
 
@@ -57,7 +55,6 @@ public class {{name}}: {% if base %}{{base}}{% else %}NSObject, Templatable{% en
 public class {{name}}Model: {% if base %}{{base}}Model{% else %}Codable{% endif %} {}
 {% else %}
 public class {{name}}Model: {% if base %}{{base}}Model{% else %}Codable{% endif %} {
-    
     {% for property in properties %}
     public var {{property.name}}: {{property.type}}
     {% endfor %}
@@ -92,7 +89,7 @@ public class {{name}}Model: {% if base %}{{base}}Model{% else %}Codable{% endif 
     public required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         {% for property in properties %}
-        self.{{property.name}} = try container.decode{% if property.isOptionalOrWrapped %}IfPresent{% endif %}({{property.swiftType}}.self, forKey: .{{property.name}}){% if property.value %} ?? {{property.value}} {% endif %}
+        self.{{property.name}} = try container.decode{% if property.isOptionalOrWrapped %}IfPresent{% endif %}({{property.swiftType}}.self, forKey: .{{property.name}}){% if property.value %} ?? {{property.value}}{% endif %}
         {% endfor %}
         {% if base %}
         try super.init(from: decoder)
@@ -117,6 +114,5 @@ public class {{name}}Model: {% if base %}{{base}}Model{% else %}Codable{% endif 
         try super.encode(to: encoder)
         {% endif %}
     }
-
 }
 {% endif %}

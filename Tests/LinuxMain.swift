@@ -1,10 +1,12 @@
 import XCTest
-@testable import AarKayTests
 @testable import AarKayKitTests
 @testable import AarKayPluginTests
+@testable import AarKayTests
 
-XCTMain([
-    testCase(AarKayTests.allTests),
-    testCase(AarKayKitTests.allTests),
-    testCase(AarKayPluginTests.allTests),
-])
+XCTMain(
+    [
+        testCase(AarKayTests.allTests),
+        testCase(AarKayKitTests.allTests),
+        testCase(AarKayPluginTests.allTests),
+    ]
+)
