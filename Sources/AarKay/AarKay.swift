@@ -99,6 +99,18 @@ public class AarKay {
             AarKayLogger.logError(error)
         }
     }
+    
+    /// Reads the global context url from the path "{PROJECT_ROOT}/AarKay/.aarkay" and serializes it into a dictionary using Yaml serialzer.
+    ///
+    /// - Returns: The dictionary from contents.
+    /// - Throws: An error if the url contents cannot be loaded.
+    private func aarkayGlobalContext() throws -> [String: Any]? {
+        let aarkayGlobalContextUrl = url.appendingPathComponent("AarKay/.aarkay")
+        guard let contents = try? String(contentsOf: aarkayGlobalContextUrl) else {
+            return nil
+        }
+        return try YamlInputSerializer.load(contents) as? [String: Any]
+    }
 
     private func bootstrap(
         plugin: String,
@@ -172,18 +184,6 @@ public class AarKay {
         } catch {
             AarKayLogger.logError(error)
         }
-    }
-
-    /// Reads the global context url from the path "{PROJECT_ROOT}/AarKay/.aarkay" and serializes it into a dictionary using Yaml serialzer.
-    ///
-    /// - Returns: The dictionary from contents.
-    /// - Throws: An error if the url contents cannot be loaded.
-    private func aarkayGlobalContext() throws -> [String: Any]? {
-        let aarkayGlobalContextUrl = url.appendingPathComponent("AarKay/.aarkay")
-        guard let contents = try? String(contentsOf: aarkayGlobalContextUrl) else {
-            return nil
-        }
-        return try YamlInputSerializer.load(contents) as? [String: Any]
     }
 
     /// Reads the current file at url and merges the contents of `RenderedFile` to it.
