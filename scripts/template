@@ -1,8 +1,8 @@
-cp -R ".github/aarkay-plugin-PLUGINLOWERNAME" ".github/aarkay-plugin-PLUGINLOWERNAME.bak"
+cp -R "aarkay-plugin-PLUGINLOWERNAME" "aarkay-plugin-PLUGINLOWERNAME.bak"
 
 # Do replacements
 function replace {
-  LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME.bak -type f -exec sed -i '' "s/$1/$2/g" {} +
+  LC_ALL=C find ./aarkay-plugin-PLUGINLOWERNAME.bak -type f -exec sed -i '' "s/$1/$2/g" {} +
 }
 replace "PLUGINLOWERNAME" "{{ cookiecutter.name|lower}}"
 replace "PLUGINNAME" "{{ cookiecutter.name }}"
@@ -11,14 +11,14 @@ replace "PLUGINGITHUB" "{{ cookiecutter.github }}"
 
 # Do Renames
 function rename {
-  LC_ALL=C find ./.github/aarkay-plugin-PLUGINLOWERNAME.bak -type f -exec rename -p "s/$1/$2/g" {} +
+  LC_ALL=C find ./aarkay-plugin-PLUGINLOWERNAME.bak -type f -exec rename -p "s/$1/$2/g" {} +
 }
 rename "PLUGINNAME" "{{ cookiecutter.name }}"
 rename "PLUGINLOWERNAME" "{{ cookiecutter.name|lower }}"
 
-rm -rf .github/aarkay-plugin-PLUGINLOWERNAME.bak
+rm -rf aarkay-plugin-PLUGINLOWERNAME.bak
 rm -rf "aarkay-plugin-{{ cookiecutter.name|lower }}"
-mv ".github/aarkay-plugin-{{ cookiecutter.name|lower }}.bak" "aarkay-plugin-{{ cookiecutter.name|lower }}"
+mv "aarkay-plugin-{{ cookiecutter.name|lower }}.bak" "aarkay-plugin-{{ cookiecutter.name|lower }}"
 
 rm -rf "aarkay-plugin-{{ cookiecutter.name|lower }}/.build"
 rm -rf "aarkay-plugin-{{ cookiecutter.name|lower }}"/*.xcodeproj
